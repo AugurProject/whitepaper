@@ -36,9 +36,15 @@ The Forecast Foundation has an open $500 bounty on white paper translations.
 
 [Hungarian](https://github.com/tomkysar/whitepaper/tree/master/hungarian) - Erik AJ
 
+[Russian](https://github.com/tomkysar/whitepaper/tree/master/hungarian) - Vanospour
+
 ------------------
 
 #### Languages In Progress
+
+If your name is on this list, please create an issue claiming the language. 
+
+[Portuguese](https://github.com/AugurProject/whitepaper/issues/1) - javiermardones
 
 German - Milan
 
@@ -49,8 +55,6 @@ Arabic - Hasan
 Vietnamese - Leodalat
 
 Persian - samira
-
-Portuguese - javiermardones
 
 Mandarin Chinese - cb.io
 
