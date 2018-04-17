@@ -16,7 +16,7 @@ The Forecast Foundation has an open $500 bounty on white paper translations.
 
 2. Paper must be delivered in LaTeX format, preferably using Overleaf. You can select _"Clone this project"_ on the [English Overleaf resource [1]](https://www.overleaf.com/read/wchttdcjvjjq), and begin working on the translation in your own copy of the paper. 
 
-3. Import the two XML files into [Draw.io](http://draw.io) and translate the diagrams. They can be exported as a PNG/JPG, and put into Overleaf. 
+3. Import the two XML files [[2]](https://drive.google.com/open?id=1Jg2vQUsLhwf7upvKFlMq_rWXsUrMuSs8) [[3]](https://drive.google.com/open?id=1rycXJMeqyppaAZtXnddwTXjor8cEBRn8)  into [Draw.io](http://draw.io) and translate the diagrams. They can be exported as a PNG/JPG, and put into Overleaf. 
 
 4. The final delivery needs to be an Overleaf link with your translation. Comment on your issue that it is complete, along with a payment address and currency of choice (ETH, REP, BTC). 
 
