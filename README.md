@@ -28,7 +28,7 @@ The Forecast Foundation has an open $500 bounty on white paper translations. You
 
 [English](https://github.com/tomkysar/whitepaper/tree/master/english) - Reference Document 
 
-[German](https://github.com/tomkysar/whitepaper/tree/master/english) - Milan
+[German](https://github.com/tomkysar/whitepaper/tree/master/german) - Milan
 
 [Japanese](https://github.com/tomkysar/whitepaper/tree/master/japanese) - CBB
 
