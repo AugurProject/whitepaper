@@ -28,6 +28,8 @@ The Forecast Foundation has an open $500 bounty on white paper translations.
 
 [English](https://github.com/tomkysar/whitepaper/tree/master/english) - Reference Document 
 
+[German](https://github.com/tomkysar/whitepaper/tree/master/english) - Milan
+
 [Japanese](https://github.com/tomkysar/whitepaper/tree/master/japanese) - CBB
 
 [Korean](https://github.com/tomkysar/whitepaper/tree/master/korean) - misskiwi
@@ -46,7 +48,7 @@ If your name is on this list, please create an issue claiming the language.
 
 [Portuguese](https://github.com/AugurProject/whitepaper/issues/1) - javiermardones
 
-German - Milan
+[Spanish](https://github.com/AugurProject/whitepaper/issues/3) - solas757575
 
 Turkish - dalaq
 
@@ -59,8 +61,6 @@ Persian - samira
 Mandarin Chinese - cb.io
 
 Romanian - larisa
-
-Spanish - solas757575
 
 ------------------
 
