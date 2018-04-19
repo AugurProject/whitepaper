@@ -1,6 +1,6 @@
 # The Augur Project Whitepaper
 
-The Forecast Foundation has an open $500 bounty on white paper translations. 
+The Forecast Foundation has an open $500 bounty on white paper translations. You are allowed to have **two** open translations at any time.
 
 ### Resources
 
