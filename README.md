@@ -1,7 +1,5 @@
 # The Augur Project Whitepaper
 
-The Forecast Foundation has an open $500 bounty on white paper translations. You are allowed to have **two** open translations at any time.
-
 ### Resources
 
 [[1]](https://www.overleaf.com/read/wchttdcjvjjq) English Whitepaper in LaTeX format. 
