@@ -50,11 +50,17 @@ If your name is on this list, please create an issue claiming the language.
 
 [Spanish](https://github.com/AugurProject/whitepaper/issues/3) - solas757575
 
-Turkish - dalaq
+[Lithuanian](https://github.com/AugurProject/whitepaper/issues/5) - simas21
+
+[French](https://github.com/AugurProject/whitepaper/issues/6) - simas21
+
+[Croatian](https://github.com/AugurProject/whitepaper/issues/42) - Missannth
+
+[Turkish](https://github.com/AugurProject/whitepaper/issues/44) - dalaq
+
+[Vietnamese](https://github.com/AugurProject/whitepaper/issues/43) - Leodalat
 
 Arabic - Hasan
-
-Vietnamese - Leodalat
 
 Persian - samira
 
