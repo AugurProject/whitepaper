@@ -38,7 +38,9 @@ The Forecast Foundation has an open $500 bounty on white paper translations. You
 
 [Hungarian](https://github.com/tomkysar/whitepaper/tree/master/hungarian) - Erik AJ
 
-[Russian](https://github.com/tomkysar/whitepaper/tree/master/hungarian) - Vanospour
+[Russian](https://github.com/tomkysar/whitepaper/tree/master/russian) - Vanospour
+
+[Romanian](https://github.com/tomkysar/whitepaper/tree/master/romanian) - larisa
 
 ------------------
 
@@ -65,8 +67,6 @@ Arabic - Hasan
 Persian - samira
 
 Mandarin Chinese - cb.io
-
-Romanian - larisa
 
 ------------------
 
