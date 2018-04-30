@@ -40,6 +40,9 @@
 
 [Romanian](https://github.com/tomkysar/whitepaper/tree/master/romanian) - larisa
 
+[Spanish](https://github.com/AugurProject/whitepaper/tree/master/spanish) - solas757575
+
+
 ------------------
 
 #### Languages In Progress
@@ -47,8 +50,6 @@
 If your name is on this list, please create an issue claiming the language. 
 
 [Portuguese](https://github.com/AugurProject/whitepaper/issues/1) - javiermardones
-
-[Spanish](https://github.com/AugurProject/whitepaper/issues/3) - solas757575
 
 [Lithuanian](https://github.com/AugurProject/whitepaper/issues/5) - simas21
 
