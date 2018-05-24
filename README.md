@@ -42,6 +42,7 @@
 
 [Spanish](https://github.com/AugurProject/whitepaper/tree/master/spanish) - solas757575
 
+[Lithuanian](https://github.com/AugurProject/whitepaper/tree/master/lithuanian) - simas21
 
 ------------------
 
@@ -50,8 +51,6 @@
 If your name is on this list, please create an issue claiming the language. 
 
 [Portuguese](https://github.com/AugurProject/whitepaper/issues/1) - javiermardones
-
-[Lithuanian](https://github.com/AugurProject/whitepaper/issues/5) - simas21
 
 [French](https://github.com/AugurProject/whitepaper/issues/6) - simas21
 
