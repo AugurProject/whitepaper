@@ -44,27 +44,18 @@
 
 [Lithuanian](https://github.com/AugurProject/whitepaper/tree/master/lithuanian) - simas21
 
+[Vietnamese](https://github.com/AugurProject/whitepaper/tree/master/vietnamese) - Leodalat
+
+[Turkish](https://github.com/AugurProject/whitepaper/tree/master/turkish) - dalaq
+
+
 ------------------
 
 #### Languages In Progress
 
-If your name is on this list, please create an issue claiming the language. 
-
 [Portuguese](https://github.com/AugurProject/whitepaper/issues/1) - javiermardones
 
-[French](https://github.com/AugurProject/whitepaper/issues/6) - simas21
-
 [Croatian](https://github.com/AugurProject/whitepaper/issues/42) - Missannth
-
-[Turkish](https://github.com/AugurProject/whitepaper/issues/44) - dalaq
-
-[Vietnamese](https://github.com/AugurProject/whitepaper/issues/43) - Leodalat
-
-Arabic - Hasan
-
-Persian - samira
-
-Mandarin Chinese - cb.io
 
 ------------------
 
