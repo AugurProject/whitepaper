@@ -1,0 +1,245 @@
+<h2>売り注文(Ask Order)<a name="ask-order"></a></h2>
+<p>売り注文とは、<a href="#order">オーダー</a>の一種で「ある<a href="#outcome">アウトカム</a>の<a href="#share">シェア</a>を売りたい」という<a href="#order-creator">オーダー作成者</a>の要求である。<a href="#bid-order">買い注文</a>の対義語である。</p>
+<h2>Atto-(接頭辞)<a name="atto-prefix"></a></h2>
+<p>Atto-は、メートル法の単位接頭辞で、10^-18、つまり、0.000000000000000001を示す。この接頭辞は、attoETH、attoREP、attotokenなど、Augurのいくつかの用語に使用される。</p>
+<h2>買い注文(Bid Order)<a name="bid-order"></a></h2>
+<p>買い注文とは、<a href="#order">オーダー</a>の一種で「ある<a href="#outcome">アウトカム</a>の<a href="#share">シェア</a>を買いたい」という<a href="#order-creator">オーダー作成者</a>の要求である。<a href="#ask-order">売り注文</a>の対義語である。</p>
+<h2>Cash</h2>
+<p>Cashとは、AugurのSolidityで書かれたスマートコントラクトで使用されるERC-20トークンで、Augurの機能の一部を助長するためETHのラッパーとして機能する。ユーザーが直接このCashトークンに関わることは無い。</p>
+<h2>カテゴリカルマーケット(Categorical Market)<a name="categorical-market"></a></h2>
+<p>3～8個の<a href="#outcome">アウトカム</a>がある<a href="#market">マーケット</a>のこと(アウトカムには<a href="#invalid-outcome">無効</a>もあるがここではカウントしない)。複数回答があるマーケットに適しており、例えば、”トーナメントXでどのチームが優勝するか？”、"次の大統領記者会見で大統領はどの色のネクタイを着用するか？"などが適している。もしマーケットの答えが、はい/いいえ のみならば<a href="#yesno-market">Yes/Noマーケット</a>を使用した方がよい。もし、ある日の株価を問うマーケットを作成するならば、8個のアウトカムだけでは不十分であるため、<a href="#scalar-market">スカラーマーケット</a>を使用すべきである。</p>
+<h2>チャレンジ(Challenge)<a name="challenge"></a></h2>
+<p><a href="#dispute">争議</a>を参照</p>
+<h2>チャイルドユニバース(Child Universe)<a name="child-universe"></a></h2>
+<p>チャイルドユニバースは、<a href="#market">マーケット</a>が[フォーク]すると生成される<a href="#universe">ユニバース</a>のことである。チャイルドユニバースには、<a href="#forked-market">フォークマーケット</a>が存在する<a href="#parent-universe">ペアレントユニバース</a>がある。フォーク処理では、このペアレントユニバースをロックしてチャイルドユニバースを作成する。言い換えると、<a href="#locked-universe">ロック済みユニバース</a>には必ずチャイルドユニバースがあるということである。</p>
+<h2>コンプリートセット(Complete Set)<a name="complete-set"></a></h2>
+<p>コンプリートセットとは、全ての<a href="#outcome">アウトカム</a>の<a href="#share">シェア</a>の集合のことである(訳注：例えば、Yes/Noマーケットのアウトカムは「YES」「NO」であるが、このマーケットのコンプリートセット1個の中身は、アウトカムYESのシェアが1つ、アウトカムNOのシェアが1つ、ということである)。<a href="#order">オーダー</a>の<a href="#order-creator">作成者</a>と<a href="#order-filler">約定者</a>が<a href="#trading">トレーディング</a>のために通貨で支払いをした時にコンプリートセットは作成され、その見返りにシェアが渡される。それぞれがシェアを受け取られ取引が完了すると、コンプリートセットは<a href="#settlement">決済</a>された状態となる。コンプリートセットの価格(<a href="#atto-prefix">attoETH</a>)は、その<a href="#market">マーケット</a>の<a href="#number-of-ticks">ティック数</a>で決定する(訳注：つまり、<code>コンプリートセット1個の価格 = ティック数 * 1 attoETH</code> である)。コンプリートセットが決済されると、そのコンプリートセットの価格に比例した決済手数料が徴収される。それゆえ、決済額が大きいほど手数料も大きくなる。決済手数料は、<a href="#report">レポーティング</a>システムに支払われる<a href="#reporting-fee">レポーティング手数料</a>と、<a href="#market-creator">マーケット作成者</a>に設定される<a href="#creator-fee">作成者手数料</a>から構成される。</p>
+<h2>作成者手数料(Creator Fee)<a name="creator-fee"></a></h2>
+<p>作成者手数料とは、ETH建ての手数料であり、<a href="#share">シェア</a>が<a href="#settlement">決済</a>されると必ずそのマーケットの<a href="#market-creator">作成者</a>に支払われる。この手数料は、新規の<a href="#market">マーケット</a>作成時に作成者によって設定される。この手数料は0～50%の範囲で設定され、設定後の変更はできない。この作成者手数料と<a href="#reporting-fee">レポーティング手数料</a>はどちらもシェアが決済されると同時に徴収される。シェアの決済が行われるのは、ユーザーが<a href="#complete-set">コンプリートセット</a>を売却する時、その<a href="#finalized-market">マーケットがファイナライズ</a>する時、オープンしていた<a href="#position">ポジション</a>をクローズする時、のいずれかである。作成者手数料は、多くのユーザーがトレードを行うような普遍的なマーケットの作成を促すために設けられた。マーケット作成者は作成時に必要なコストをこの手数料で埋め合わせることができ、皆が興味を持つマーケットを作成することができれば利益を上げることができる。<a href="#settlement-fees">決済手数料</a>については項目「<a href="#trading">トレーディング</a>」で詳細に述べている。</p>
+<h2>クラウドソーサー(Crowdsourcer)<a name="crowdsourcer"></a></h2>
+<p>クラウドソーサーとは、<a href="#market">マーケット</a>の各<a href="#outcome">アウトカム</a>に対して存在し、与えられた<a href="#fee-window">手数料期間</a>中にアウトカムに対してどれだけの<a href="#rep">REP</a>がステークされたかを記録するSolidityスマートコントラクトである。もしユーザーが暫定アウトカムに対する<a href="#dispute">争議</a>を行うために、<a href="#dispute-bond">争議保証金</a>を満たすだけのREPをステークすれば、ステークされたアウトカムが新たな<a href="#tentative-outcome">暫定アウトカム</a>となる(そしてそのマーケットは次の争議ラウンドに進む)か、(争議保証金が<a href="#fork-threshold">フォーク閾値</a>を超過した場合は)フォークが発生する。もし争議保証金を満たすだけのREPがステークされ、ステークされたアウトカムがそのマーケットでの<a href="#final-outcome">ファイナルアウトカム</a>となれば、REPをステークしたユーザーはマーケットの<a href="#finalized-market">ファイナライズ</a>時に自身がステークしたREPが1.5倍となって戻ってくる。もし、争議保証金を満たすだけのREPがステークされたが、ステークしたアウトカムがそのマーケットでの<a href="#final-outcome">ファイナルアウトカム</a>にならない場合、ステークしたREPは全て没収される。もし争議保証金を満たすだけのREPがステークされなかった場合、手数料期間終了時に、ステークしたユーザーにREPは返却される。</p>
+<h2>分散型オラクル(Decentralized Oracle)<a name="decentralized oracle"></a></h2>
+<p>Augurの肝は、この分散型オラクルである。このオラクルがあるために、ユーザーやスマートコントラクトはAugurに対して質問を投げかけ、単一の個人、AI、組織に依存することなく(<a href="#market">マーケット</a>の<a href="#outcomes">アウトカム</a>に対するREP保有者の投票に基づいて)現実世界で発生した情報を正確に取得することができる。このAugurのオラクルによって、集権化された信頼されている第三者に依存することなく、現実世界からブロックチェーン上に情報を移すことが可能となる。</p>
+<h2>指名レポート(Designated Report)<a name="designated-report"></a></h2>
+<p>指名レポートとは、<a href="#market">マーケット</a>で<a href="#designated-reporter">指名レポーター</a>が特定の<a href="#outcome">アウトカム</a>に対してREPを<a href="#designated-reporter-stake">ステーク</a>することである。ステークされたアウトカムはそのマーケットの<a href="#tentative-outcome">暫定アウトカム</a>となり、そのマーケットは<a href="#waiting-for-the-next-fee-Window-to-Begin-Phase">次の手数料期間待ちフェーズ</a>へと移行する。</p>
+<h2>不参保証金(No-Show Bond)<a name="no-show-bond"></a></h2>
+<p>不参保証金とは、マーケット作成時に<a href="#market-creator">作成者</a>によって<a href="#rep">REP</a>建てで支払われる。この保証金は、<a href="#designated-reporting-phase">指名レポーティングフェーズ</a>で<a href="#designed-reporter">指名レポーター</a>が<a href="#report">レポート</a>を行うと、即かつ完全にマーケット作成者に返却される。指名レポーティングフェーズで指名レポーターがレポートを行わなければ、この不参保証金は<a href="#first-public-reporter">ファーストパブリックレポーター</a>が<a href="#tentative-outcome">暫定アウトカム</a>をレポートするためのREPとして使用される。ファーストパブリックレポーターがステークした暫定アウトカムが<a href="#final-outcome">ファイナルアウトカム</a>となれば、ファーストパブリックレポーターはこの不参保証金を受け取ることができる。ファーストパブリックレポーターがステークした暫定アウトカムが<a href="#disputed">争議</a>され、それでもなおステークしたアウトカムが<a href="#final-outcome">ファイナルアウトカム</a>になれば、この不参保証金とその50%のREPをボーナスとして受け取る。この保証金があるため、<a href="#first-public-report">ファーストパブリックレポート</a>では自身のREPを使用せずにステークすることができる。つまり、REP保有者でなくともレポートができるということであり、最終的にレポートしたアウトカムで<a href="#finalized-market">ファイナライズ</a>すればREPを購入しなくともREPを入手できるということである。(注意:レポートを行うためにgasコストを支払う必要がある。)</p>
+<p>ローンチ後の初回の<a href="#fee-window">手数料期間</a>では、不参保証金は 0.35 <a href="#rep">REP</a>に設定される。<a href="#validity-bond">有効性保証金</a>と同様、不参保証金も1%(指名レポーターが期限内にレポートしない割合)を基準として上下に調整される。下限値は 0.35 REP である。厳密には、直前の手数料期間において期限内に指名レポーターによりレポートされなかったマーケットの割合を ρ 、直前の手数料期間での不参保証金額を b<sub>r</sub> とすると、現在の手数料期間における不参保証金の最大値は max{0.35, b<sub>r</sub>f(ρ)} である。</p>
+<h2>指名レポーター(Designated Reporter)<a name="designated-reporter"></a></h2>
+<p>指名レポーターは、<a href="#designated-reporting-phase">指名レポーティングフェーズ</a>である<a href="#market">マーケット</a>の<a href="#tentative-outcome">暫定アウトカム</a>をレポートすることを指名された単一のEthereumアドレスのことである。指名レポーターは、マーケット作成時にその<a href="#market-creator">作成者</a>によって設定される。全てのマーケットには必ずこの指名レポーターが設定される。</p>
+<h2>指名レポーターステーク(Designated Reporter Stake)<a name="designated-reporter-stake"></a></h2>
+<p><a href="#designated-reporter">指名レポーター</a>が<a href="#report">レポート</a>を行う際、<a href="#outcome">アウトカム</a>に対してREPをステークすることを指名レポーターステークという。指名レポーターが不正なレポートを行う程に上昇し、正しいレポートが行われるほど減少する。算出方法は<a href="#no-show-bond">不参保証金</a>とは異なる。</p>
+<p>ローンチ後の初回の<a href="#fee-window">手数料期間</a>では、指名レポーターステークは 0.35 <a href="#rep">REP</a> に設定される。指名レポーターステークは、直前の手数料期間における指名レポーターが行った誤った<a href="#designated-report">レポート</a>(<a href="#market">マーケット</a>の<a href="#final-outcome">ファイナルアウトカム</a>と異なったレポート)の数によって動的に調整される。厳密には、直前の手数料期間において誤ったレポートを 行った指名レポーターの割合を δ、直前の手数料期間での指名レポーターステーク額を bd とすると、現在の手数料期間における指名レポーターステークの最大値は max{0.35, b<sub>d</sub>f(δ)} である。</p>
+<h2>指名レポーティング(Designated Reporting)<a name="designated-reporting"></a></h2>
+<p>指名レポーティングとは、<a href="#market">マーケット</a>に対して行う<a href="#report">レポート</a>の一つであり、最初、かつ、最速で行われるレポートである。指名レポーターとして指名されているEthereumアドレスは、マーケットの<a href="#end-time">終了日時</a>から3日以内にそのマーケットに対して<a href="#tentative-outcome">暫定アウトカム</a>を提出する必要がある。この3日間は、<a href="#designated-reporting-phase">指名レポーティングフェーズ</a>と呼ばれる。</p>
+<h2>指名レポーティングフェーズ(Designated Reporting Phase)<a name="designated-reporting-phase"></a></h2>
+<p>指名レポーティングフェーズは、<a href="#market">マーケット</a>の<a href="#end-time">終了日時</a>を迎えた直後から3日間続く。この期間中、<a href="#designated-reporter">指名レポーター</a>はそのマーケットに対して<a href="#tentative-outcome">暫定アウトカム</a>をレポートすることが求められる。<a href="#designated-reporter">指名レポーター</a>が<a href="#report">レポート</a>を行うと、そのマーケットは<a href="#waiting-for-the-next-fee-window-to-begin-phase">次の手数料期間開始待ちフェーズ</a>へと突入する。もし指名レポーターが指名レポーティングフェーズ中にレポートを行わなければ、マーケットは<a href="#open-reporting-phase">公開レポーティングフェーズ</a>に突入する。このフェーズに入ると、<a href="#market-creator">マーケット作成者</a>は<a href="#no-show-bond">不参保証金</a>を取り戻すことはできず、<a href="no-show-bond">不参保証金</a>は<a href="#first-public-reporter">ファーストパブリックレポーター</a>の<a href="#first-public-reporter-stake">ステーク</a>として使用される。</p>
+<h2>デベロッパーモード(Developer Mode)<a name="developer-mode"></a></h2>
+<p>Augurのリリース初期段階では、Solidityのスマートコントラクトによってこの特別な機能である「デベロッパーモード」が実装される。 この機能は、攻撃者がAugurの<a href="#decentralized-oracle">分散型オラクルシステム</a>を侵害しようとする場合のセキュリティ上の予防措置として追加された。 セキュリティの悪用が発見された場合、Augur開発チームはAugurを停止することができる。この停止機能では、トレーディング、レポーティング、争議などのすべての通常の機能が停止され、ユーザーはREPとETHをマーケットから引き出すことが可能となる。</p>
+<p>Augurが完全にテストされ、開発チームがAugurはセキュアであると確信できた場合に(Augur開発チームを含み)誰もこの機能を利用できないよう削除する予定である。</p>
+<h2>争議(Dispute)<a name="dispute"></a></h2>
+<p>争議とは、REP保有者がその<a href="#rep">REP</a>を<a href="#market">マーケット</a>の<a href="#tenative-outcome">暫定アウトカム</a>以外の<a href="#outcome">アウトカム</a>に<a href="#dispute-stake">ステーク</a>することを指す。このREPは<a href="#crowdsourcer">クラウドソーサー</a>に送信され、<a href="#finalized-market">ファイナライズ</a>前に暫定アウトカムに対して争議を行うための<a href="#dispute-bond">争議保証金</a>として使われる。もし、争議保証金が満額に達し、首尾よくそのアウトカムが<a href="#final-outcome">ファイナルアウトカム</a>になれば、ステークしたREPはファイナライズ時に1.5倍となってユーザーに戻ってくる。争議保証金が満額に達しても、そのアウトカムが<a href="#final-outcome">ファイナルアウトカム</a>にならければ、ステークしたREPは全て没収される。争議保証金が満額に達しない場合は、ステークしたREPは手数料期間終了後にユーザーへ返却される。</p>
+<h2>争議保証金(Dispute Bond)<a name="dispute-bond"></a></h2>
+<p><a href="#market">マーケット</a>が<a href="#dispute-round-phase">争議ラウンドフェーズ</a>である場合、<a href="#tentative-outcome">暫定アウトカム</a>が誤っていると思うユーザーは、その暫定アウトカム以外の<a href="#outome">アウトカム</a>に<a href="#rep">REP</a>を<a href="#dispute-stake">ステーク</a>することで争議保証金に拠金できる。暫定アウトカム以外の全てのアウトカムに対して、争議保証金への拠金が可能である。争議保証金は一人のユーザーで全額を払う必要は無く、複数のユーザーで募ることが可能である。暫定アウトカムを争議したいユーザーは誰でも、正しいと思うアウトカムに対して保有するREPを<a href="#crowdsourcer">クラウドソーシング</a>することができる。もし(暫定アウトカム以外の)いずれかのアウトカムへの拠金が争議保証金の満額に達した場合、その暫定アウトカムは<a href="#dispute">争議</a>の対象となる。ユーザーがその争議ステークに応じて受け取る報酬については項目「<a href="#dispute-stake">争議ステーク</a>」を参照してほしい。</p>
+<p>争議保証金は以下のようにして決定される。</p>
+<p><i>n</i>回目争議ラウンド開始時のそのマーケットの全アウトカムの争議ステーク合計を<i>A<sub>n</sub></i>とする。<i>n</i>回目争議ラウンド開始時のアウトカムωに対する争議ステークの合計を<i>S</i>(ω, <i>n</i>)とする。現在の暫定アウトカムに対して争議を成功させるための争議保証金<i>B</i>(ω,<i>n</i>)は以下となる。</p>
+<p><i>B</i>(ω,<i>n</i>) = 2<i>A<sub>n</sub></i> - <i>3S</i>(ω,<i>n</i>)</p>
+<p>各争議ラウンドの争議保証金額は、争議した結果そのアウトカムがファイナルアウトカムになった場合に、<a href="#reporter">レポーター</a>がステークした金額に対してROIが50%となるように設計されている。</p>
+<h2>争議ラウンド(Dispute Round)<a name="dispute-round"></a></h2>
+<p>争議ラウンドとは、1回あたり7日間で最大20回行われるラウンドのことで、<a href="#dispute-round-phase">争議ラウンドフェーズ</a>中かつ<a href="#fork">フォーク</a>が発生する前までの間で発生し得る。争議ラウンド中は、<a href="#tentative-outcome">暫定アウトカム</a>が正しくないと思うユーザーは、その暫定アウトカム以外の<a href="#outcome">アウトカム</a>に<a href="#rep">REP</a>を<a href="#dispute-stake">ステーク</a>することで<a href="#dispute">争議</a>を試みることができる。争議が成功すると、ステークしたアウトカムが新たな暫定アウトカムとなるか、あるいは、<a href="#dispute-bond">争議保証金</a>が<a href="#fork-threshold">フォーク閾値</a>よりも大きい場合は<a href="#fork">フォーク</a>が発生する。</p>
+<h2>争議ラウンドフェーズ(Dispute Round Phase)<a name="dispute-round-phase"></a></h2>
+<p>争議ラウンドフェーズとは、<a href="#market">マーケット</a>の<a href="#report">レポート</a>の終了後の7日間の期間のことである。このフェーズでは、<a href="#tentative-outcome">暫定アウトカム</a>に異議があるREP保有者が、自身が正しいと思う<a href="#outcome">アウトカム</a>にREPを<a href="#dispute-stake">ステーク</a>することで<a href="#dispute">争議</a>を試みることができる。もし、争議が成功すれば、ステークした<a href="#outcome">アウトカム</a>が新たな暫定アウトカムとなる。あるいは、<a href="#dispute-bond">争議保証金</a>が<a href="#fork-threshold">フォーク閾値</a>を満たした場合、そのマーケットは<a href="#fork">フォーク</a>が発生する。ある争議ラウンドで争議が成功すれば、次の争議ラウンドでは前回以上の争議保証金が必要となる。争議保証金の算出方法については項目「<a href="#dispute-bond">争議保証金</a>」を参照。</p>
+<h2>争議ステーク(Dispute Stake)<a name="dispute-stake"></a></h2>
+<p>ある<a href="#market">マーケット</a>が<a href="#dispute-round-phase">争議ラウンドフェーズ</a>である時、ユーザーは<a href="#tentative-outcome">暫定アウトカム</a>以外の<a href="#outcome">アウトカム</a>に<a href="#rep">REP</a>をステークすることができる。ステークしたREPはクラウドソーシングされた<a href="#dispute-bond">争議保証金</a>として使われ、ステークできる範囲は、1 <a href="#atto-prefix">attoREP</a>から、<a href="#dispute-bond">争議保証金</a>の満額までである(設定された争議保証金以上の額をステークすることはできない)。</p>
+<p>争議が失敗すると、<a href="#dispute-round">争議ラウンド</a>終了時にステークしたユーザーへそのREPが返却される。争議が成功するとその争議ステークは<a href="#market">マーケット</a>が<a href="#finalized-market">ファイナライズ</a>するまで(あるいは他のマーケットで<a href="#fork">フォーク</a>が発生するまで)その<a href="#outcome">アウトカム</a>にステークした状態が続く。マーケットがファイナライズした時、争議ラウンドでファイナルアウトカムとなったアウトカムにステークしているユーザーは、報酬としてそのステークしたREPの1.5倍を受け取ることとなる。逆に、ファイナルアウトカム以外にステークしていれば、それらのREPは没収される。全ての争議ステークは(争議が成功するか否かに関わらず)現在の<a href="#fee-window">手数料期間</a>の<a href="#reporting-fee-pool">レポーティング手数料プール</a>に蓄えられた一部をETHで受け取る。(このETHは、トレードやウィニング<a href="#share">シェア</a>の払い戻しで徴収されたものである。手数料は、<a href="#complete-set">コンプリートセット</a>が売られた時やウィニングシェアが払い戻された時に必ずETH建てで徴収され、その<a href="#fee-window">手数料期間</a>のレポーティング手数料プールに蓄えられる)</p>
+<p>各争議ラウンドの争議保証金額は、<a href="#dispute">争議</a>した結果そのアウトカムが<a href="#final-outcome">ファイナルアウトカム</a>になれば、ステークした金額に対してROIが50%となるように設計されている。争議保証金がどのようにして算出されるかは項目「<a href="#dispute-bond">争議保証金</a>」を参照。</p>
+<h2>争議トークン(Dispute Token)<a name="dispute-token"></a></h2>
+<p>ユーザーが<a href="#crowdsourcer">クラウドソーサー</a>に<a href="#rep">REP</a>をステークすると、クラウドソーサーはそのステークしたREPと同量の争議トークンをユーザーに配分する。その<a href="#market">マーケット</a>が<a href="#finalized-market">ファイナライズ</a>した時、支払先のユーザーを決定するためにこの争議トークンがAugurのスマートコントラクトにより使用される。争議トークンはAugurの内部でのみ使用され、ユーザーが直接関わることは無い。しかし、ERC-20トークンとして実装されているため、潜在的な意味ではユーザー間でのトレードは可能である(例えば、争議が長期に渡っているため、マーケットのファイナライズ前に争議トークンを払い出したいユーザーがいる場合、その争議トークンを値引きして他のユーザーに売り渡すことが可能である)。</p>
+<h2>終了日時(End Time)<a name="end-time"></a></h2>
+<p>終了日時とは、<a href="#market">マーケット</a>のイベントが起こり、その結果が分かる日時のことである。この日時を過ぎるとそのマーケットでは<a href="#report">レポート</a>の受付が開始され、最終的に<a href="#finalized-market">ファイナライズ</a>する。</p>
+<h2>手数料トークン(Fee Token)<a name="fee-token"></a></h2>
+<p>手数料トークンはユーザー同士が直接交換できるトークンではないが、<a href="#first-public-report">ファーストパブリックレポート</a>または<a href="#crowdsourcer">クラウドソーサー</a>にステークされた<a href="#rep">REP</a>をユーザーに返却できるよう、AugurのSolidityスマートコントラクトにより内部的に使用される。与えられた<a href="#fee-window">手数料期間</a>中に<a href="#first-public-reporter">ファーストパブリックレポート</a>が行われると、AugurはそのレポートでステークされたREPと同量の手数料トークンを生成する。同様に、<a href="#tentative-outcome">暫定アウトカム</a>に対する<a href="#dispute">争議</a>を行うと、クラウドソーサーにステークされたREPと同量の手数料トークンがAugurにより生成される。手数料期間が終了すると、ステークしたREPはユーザーに返却され、ユーザーの手数料トークン量に応じて手数料期間に収集した<a href="#reporting-fee">レポーティング手数料</a> が配分される。</p>
+<h2>手数料期間(Fee Window)<a name="fee-window"></a></h2>
+<p>Augurの<a href="#report">レポーティング</a>システムは、この7日間の手数料期間が繰り返されることによって稼働する。手数料期間中、Augurによって集められた各手数料は<a href="#reporting-fee-pool">レポーティング手数料プール</a>に蓄えられる。このレポーティング手数料プールはAugurのレポート作業に加担した<a href="#rep">REP</a>保有者への報酬として使用される。手数料期間中にREPをステークしたREP保有者は、その<a href="#dispute-stake">ステーク</a>した量に応じてレポーティング手数料プールから手数料を受け取る。このようにして、手数料期間中に参加した全てのREP保有者は、この期間中に収集された手数料の一部を受け取る。ここで言う参加とは、<a href="#designated-reporting">指名レポーティング</a>、<a href="#open-reporting">公開レポーティング</a>、<a href="#outcome">アウトカム</a>への<a href="#dispute">争議</a>、もしくは単純に<a href="#participation-token">パーティシペーショントークン</a>を購入することを指す。</p>
+<h2>オーダーの約定(Fill Order)<a name="fill-order"></a></h2>
+<p>「<a href="#order">オーダー</a>が約定する」とは、そのオーダーで<a href="#order-creator">オーダー作成者</a>が求めているものを、<a href="#order-filler">約定者</a>が提供することである。<a href="#order">オーダー</a>の要求に対して約定者がその一部しか提供しないことを部分約定という。対して、完全に提供することを完全約定という。</p>
+<h2>ファイナルアウトカム(Final Outcome)<a name="final-outcome"></a></h2>
+<p>ファイナルアウトカムとは、<a href="#dispute-round-phase">争議ラウンドフェーズ</a>で<a href="#dispute">争議</a>されなかった<a href="#tentative-outcome">暫定アウトカム</a>、または、<a href="#fork">フォーク</a>によって決定した暫定アウトカムのことである。この時、<a href="#market">マーケット</a>は<a href="#finalized-market">ファイナライズ</a>状態となり、<a href="#finalized-phase">ファイナライズフェーズ</a>に移行する。マーケットのファイナルアウトカムの変更は不可能であり、争議もできない。</p>
+<h2>ファイナライズマーケット(Finalized Market)<a name="finalized-market"></a></h2>
+<p>ファイナライズマーケットとは、<a href="#dispute-round-phase">争議ラウンドフェーズ</a>で<a href="#tentative-outcome">暫定アウトカム</a>に対して<a href="#dispute">争議</a>が行われなかった<a href="#market">マーケット</a>、あるいは、<a href="#fork">フォーク</a>を経たマーケットのことである。<a href="#tentative-outcome">暫定アウトカム</a>が確定したとみなされ、<a href="#post-finalization-waiting-period">ファイナライズ後待ち期間</a>が経過すれば<a href="#share">シェア</a>保有者は<a href="#settlement">決済</a>が可能となる。</p>
+<h2>ファイナライズフェーズ(Finalized Phase)<a name="finalized-phase"></a></h2>
+<p>マーケットの最終フェーズであり、<a href="#market">マーケット</a>が<a href="#finalized-market">ファイナライズ</a>されると発生するフェーズ。</p>
+<h2>ファーストパブリックレポート(First Public Report)<a name="first-public-report"></a></h2>
+<p><a href="#designated-reporter">指名レポーター</a>が<a href="designated-report">指名レポート</a>を行わなかった場合、<a href="#market">マーケット</a>は<a href="#open-reporting-phase">公開レポーティングフェーズ</a>となる。このフェーズでは、<a href="#market-creator">マーケット作成者</a>が支払った<a href="#no-show-bond">不参保証金</a>を使い、<a href="#tentative-outcome">暫定アウトカム</a>に<a href="#rep">REP</a>を<a href="#first-public-reporter-stake">ステーク</a>することでレポートを行うことが可能であり、このレポートのことを<a href="#first-public-report">ファーストパブリックレポート</a>と呼ぶ。ファーストパブリックレポーターはそのレポートを行うためにgasコストを支払う必要がある。</p>
+<h2>ファーストパブリックレポーター(First Public Reporter)<a name="first-public-reporter"></a></h2>
+<p>ファーストパブリックレポーターとは、<a href="#open-reporting-phase">公開レポーティングフェーズ</a>で<a href="#tentative-outcome">暫定アウトカム</a>に<a href="#rep">REP</a>を<a href="#first-public-reporter-stake">ステーク</a>するユーザーのことである。</p>
+<h2>ファーストパブリックレポーターステーク(First Public Reporter Stake)<a name="first-public-reporter-stake"></a></h2>
+<p><a href="#market">マーケット</a>の<a href="#designated-reporter">指名レポーター</a>が<a href="designated-report">指名レポート</a>を行わず、代わりに<a href="#first-public-reporter">ファーストパブリックレポーター</a>が<a href="#report">レポート</a>を行う場合、そのレポートでは<a href="#no-show-bond">不参保証金</a>がステーク用のREPとして使用される。もしステークした暫定アウトカムが<a href="#final-outcome">ファイナルアウトカム</a>になれば、ファーストパブリックレポーターはその不参保証金を受け取る。</p>
+<h2>フォーク(Fork)<a name="fork"></a></h2>
+<p>フォークが発生するのは、<a href="#tentative-outcome">暫定アウトカム</a>に対する<a href="#dispute">争議</a>のために必要な<a href="#dispute-bond">争議保証金</a>が<a href="#fork-threshold">フォーク閾値</a>よりも多くなった場合である。フォークにより、Augurは複数の新しい<a href="#universe">ユニバース</a>を生成する。生成された新しいユニバースには、<a href="#forked-market">フォークマーケット</a>は存在するが、それ以外のマーケットもREPも存在しない。フォーク対象の<a href="#outcome">マーケット</a>の<a href="#outcome">アウトカム</a>毎(アウトカム「<a href="#invalid-outcome">無効</a>」を含む)にユニバースが生成され、それぞれのユニバースでは各アウトカムが<a href="#finalized-market">ファイナルアウトカム</a>になった状態である。REP保有者はどのユニバースに移行するか選択する必要がある。移行は一方向で不可逆である。<a href="#fork-period">フォーク期間</a>である60日が経過すると、最もREPが移行されたユニバースではフォークしたマーケットの<a href="#share">シェア</a>の<a href="#settlement">決済</a>が可能となり、そのユニバースでのみ<a href="#reporting-fee">レポーティング手数料</a>が<a href="#reporter">レポーター</a>に支払われる。<a href="#forked-market">フォークマーケット</a>が存在するユニバースである<a href="#parent-universe">ペアレントユニバース</a>は<a href="#locked-universe">ロック状態</a>となる。フォークにより生成されたユニバースは<a href="#child-universe">チャイルドユニバース</a>と呼ばれる。フォークすると、フォークによって生み出された各チャイルドユニバースに属する新しいREPトークンコントラクトが作成される。また、各チャイルドユニバースのフォークの発生元以外のマーケットはすべて、<a href="#initial-reporter">イニシャルレポーター</a>がレポートしたアウトカムに暫定アウトカムがリセットされる。また、争議で<a href="#dispute-crowdsourcer">争議クラウドソーサー</a>に<a href="#dispute-stake">ステーク</a>されている全てのREPは、ステークしたREP保有者に返却される。これらのマーケットは、<a href="waiting-for-the-next-fee-window-to-begin-phase">次の手数料期間開始待ちフェーズ</a>から再開する。</p>
+<h2>フォーク期間(Fork Period)<a name="fork-period"></a></h2>
+<p>フォーク期間、または、フォークフェーズとは、<a href="#fork">フォーク</a>開始から最大60日間続く期間のことである。特定の<a href="#child-universe">チャイルドユニバース</a>に<a href="#rep">REP</a>の大多数が移行される、あるいは60日が経過すると、この期間は終了し、その<a href="#market">マーケット</a>は<a href="#finalized-market">ファイナライズ</a>する。</p>
+<h2>フォークマーケット(Forked Market)<a name="fork-market"></a></h2>
+<p>フォークマーケットとは、<a href="#market">マーケット</a>の<a href="#tentative-outcome">暫定アウトカム</a>が<a href="#dispute">争議</a>され、その<a href="#dispute-bond">争議保証金</a>が<a href="#fork-threshold">フォーク閾値</a>を上回ることで<a href="#fork">フォーク</a>が発生したマーケットのことである。フォークが発生すると、フォークマーケットの各アウトカムが<a href="#final-outcome">ファイナルアウトカム</a>として扱われる<a href="#universe">ユニバース</a>が生成される。この時、フォークの発生源となるマーケットが存在するユニバースは<a href="#locked-universe">ロック済みユニバース</a>となる。</p>
+<h2>フォーク閾値(Fork Threshold)<a name="fork-threshold"></a></h2>
+<p>フォーク閾値とは、<a href="#market">マーケット</a>でフォークを発生させるために<a href="#dispute-crowdsourcer">争議クラウドソーサー</a>に<a href="#dispute-stake">ステーク</a>が必要な<a href="#rep">REP</a>の量のことである。存在する全REPの2.5%がそのマーケットの争議クラウドソーサーにステークされるとフォークが発生する。</p>
+<h2>ジェネシスユニバース(Genesis Universe)<a name="genesis-universe"></a></h2>
+<p>ジェネシスユニバースとは、<a href="#parent-universe">ペアレントユニバース</a>を持たない<a href="#universe">ユニバース</a>のことである。ローンチ時点で存在するユニバースは、このジェネシスユニバースのみである。しかし、ユーザーは関数<code>augur.api.Augur.createGenesisUniverse</code>を使用することで、新たに別のジェネシスユニバースを生成することができる。(これを行う理由の一つとしては、オリジナルのジェネシスユニバースにある<a href="#market">マーケット</a>の<a href="#final-outcome">ファイナルアウトカム</a>に賛同できないため、別のジェネシスユニバースを生成したい場合などが考えられる。)作成直後のジェネシスユニバースにはマーケットは含まれず、<a href="#rep">REP</a>もない。ユーザーはジェネシスユニバースにREPを供給するために、関数<code>augur.api.ReputationToken.migrateFromLegacyReputationToken</code>を使用して、<a href="#legacy-rep">レガシーREP</a>をジェネシスユニバースのREPスマートコントラクトに移行しなくてはならない。</p>
+<h2>イニシャルレポート(Initial Report)<a name="initial-report"></a></h2>
+<p>イニシャルレポートとは、ある<a href="#market">マーケット</a>に対して初めて行われる<a href="#report">レポート</a>のことである。イニシャルレポートはしばしば<a href="#designed-reporter">指名レポーター</a>によって行われ、指名レポートが行われると即座に<a href="#no-show-bond">不参保証金</a>が<a href="#market-creator">マーケット作成者</a>に返却させる。しかし、指名レポーティングフェーズで指名レポーターがレポートを行わなかった場合、マーケットは<a href="#open-reporting-phase">公開レポーティングフェーズ</a>に突入する。このフェーズに入ってしまうと、マーケット作成者にこれらの<a href="#no-show-bond">不参保証金</a>は返却されない。代わりに、不参保証金は<a href="#first-public-reporter">ファーストパブリックレポーター</a>が<a href="#first-public-report">レポート</a>する際の<a href="#first-public-reporter-stake">ファーストパブリックレポーターステーク</a>として使用される。このことは、ファーストパブリックレポーターにレポートを行うインセンティブとなる。理由は、ファーストパブリックレポーターがステークしたアウトカムが<a href="#final-outcome">ファイナルアウトカム</a>になれば、不参保証金を獲得できることが約束されているためである。</p>
+<h2>イニシャルレポーター(Initial Reporter)<a name="initial-reporter"></a></h2>
+<p>イニシャルレポーターとは、<a href="#market">マーケット</a>の<a href="#initial-report">イニシャルレポート</a>を行うレポーターのことである。一般に、<a href="#designated-reporter">指名レポーター</a>がイニシャルレポーターとなる可能性が高いが、指名レポーターが<a href="#report">レポート</a>を行わない場合、そのマーケットの<a href="#open-reporting-phase">公開レポーティングフェーズ</a>でファーストパブリックレポートを行ったレポーターが、イニシャルレポーターとなる。</p>
+<h2>無効アウトカム(Invalid Outcome)<a name="invalid-outcome"></a></h2>
+<p>マーケット作成者により設定された<a href="#outcome">アウトカム</a>と実際に起きたイベントの結果が一致しない場合、あるいは、マーケットの質問内容が漠然としているため正確に回答できない場合、<a href="#reporters">レポーター</a>は「無効」という<a href="#tentative-outcome">暫定アウトカム</a>で<a href="#report">レポート</a>できる。加えて、そのマーケットが<a href="#dispute-round">争議ラウンド</a>に突入した場合、「無効」というアウトカムに<a href="#rep">REP</a>を<a href="#dispute-stake">ステーク</a>し争議することができ、もしそのマーケットで<a href="#fork">フォーク</a>が発生すればアウトカム「無効」の<a href="#child-universe">チャイルドユニバース</a>に保有するREPを移行できる。<a href="#final-outcome">ファイナルアウトカム</a>が「無効」になった場合、<a href="#payout-set">ペイアウトセット</a>は各アウトカムで同じ<a href="#number-of-ticks">ティック数</a>となる。例えば、4つのアウトカムがある500<a href="#tick">ティック</a>のカテゴリカルマーケットの場合、払い戻し額はそれぞれ[125, 125, 125, 125]となる。つまり、マーケットの<a href="#share">シェア</a>保有者は保有するシェアの種類に依らず、<a href="#settlement">決済</a>時に各シェアで同額が払い戻されるということである。</p>
+<h2>レガシーREP(Legacy REP)<a name="legacy-rep"></a></h2>
+<p>レガシー<a href="#rep">Reputationトークン</a>、または、レガシーREPとは、<a href="https://github.com/AugurProject/augur-core/blob/master/source/contracts/legacy_reputation/LegacyRepToken.sol">レガシーREPスマートコントラクト</a>に存在し、特定の<a href="#universe">ユニバース</a>に対応する<a href="https://github.com/AugurProject/augur-core/blob/master/source/contracts/reporting/ReputationToken.sol">Reptationトークンスマートコントラクト</a>に移行されていないREPのことである。Augurを使用する前に関数<code>augur.api.ReputationToken.migrateFromLegacyReputationToken</code>を実行して、<br />レガシーREPをReptationトークンスマートコントラクトに移行しなくてはならない。</p>
+<h2>ロングポジション(Long Position)<a name="long-position"></a></h2>
+<p>Augurでは、「<a href="#market">マーケット</a>の<a href="#outcome">アウトカム</a>のロングポジションをオープンする」とは、そのアウトカムの<a href="#share">シェア</a>を購入することである。ロングポジションをオープンするためのコストは、(シェアの単価 * シェア数) で算出される。トレーディングに関するより詳細な情報は、項目「<a href="#trading">トレーディング</a>」を参照してほしい。</p>
+<h2>ロック済みユニバース(Locked Universe)<a name="locked-universe"></a></h2>
+<p>ロック済みユニバースとは、<a href="#fork">フォーク</a>の発生により、新たに<a href="#markets">マーケット</a>が生成されることがなくなった<a href="#universe">ユニバース</a>のことである。このロック済みユニバース内の全マーケットは引き続きトレード可能である。たとえ<a href="#finalized-market">ファイナライズ</a>後であってもマーケットのトレードは決して停止することは無い。ロック済みユニバース内の<a href="#rep">REP</a>を保有するユーザーは、フォークによりマーケットがロックされた後に、生成された新しいユニバースの一つに対してそのREPを一度だけ移行する権利が与えられる。REP保有者のユニバースへのREPの移行について、制限時間は無い。</p>
+<h2>マーケット(Market)<a name="market"></a></h2>
+<p>マーケットは、ユーザーが少額の料金を支払うことで作成することができる。マーケットには、人々が予想を行いたいであろう将来起こり得るイベントを記述する。また、マーケットにはイベントの<a href="#outcome">アウトカム</a>の確認方法に関する情報を記述する必要がある。Augur上に作成された各マーケットには、自動実行される<a href="#order-book">オーダーブック</a>があり、このオーダーブックによりユーザーはそのマーケットの異なるアウトカムの<a href="#share">シェア</a>を売買することができる。マーケット作成者はそのマーケットの<a href="#creator-fee">作成者手数料</a>を設定する。この手数料は設定後の変更は不可能であり、この設定に従いマーケットで<a href="#settlement">決済</a>された全てのシェアから手数料を徴収する。マーケット作成者は、マーケットの<a href="#maximum-display-price">最大表示価格</a>、<a href="#minimum-display-price">最小表示価格</a>、<a href="#number-of-ticks">ティック数</a>を設定する。マーケットの種類は、<a href="#yesno-market">Yes/No</a>、<a href="#categorical-market">カテゴリカル</a>、<a href="#scalar-market">スカラー</a>の3種類が存在する。</p>
+<h2>マーケット作成者(Market Creator)<a name="market-creator"></a></h2>
+<p>マーケット作成者とは、<a href="#market">マーケット</a>を作成したユーザーのことである。作成者はマーケットを作成するためには少額の料金を支払う必要があるが、そのマーケットで<a href="#share">シェア</a>の<a href="#settlement">決済</a>時に課すことができる<a href="#creator-fee">作成者手数料</a>が設定可能である。マーケット作成者には、より多くの<a href="#settlement-fees">決済手数料</a>を得るためにポピュラーなマーケットを作成しようという動機付けがされている。この他にマーケット作成時に設定しなくてはならない情報として、実際の質問、マーケットのタイプ(<a href="#yesno-market">Yes/No</a>、<a href="#categorical-market">カテゴリカル</a>、<a href="#scalar-market">スカラー</a>)、<a href="#outcome">アウトカム</a>の数、<a href="#end-time">終了日時</a>、<a href="#topic">トピック</a>、がある。</p>
+<h2>マーケット作成者メールボックス(Market Creator Mailbox)<a name="market-creator-mailbox"></a></h2>
+<p>マーケット作成者メールボックスとは、<a href="#market">マーケット</a>の<a href="#market-creator">作成者</a>に属するアドレスである。マーケット作成者が(ETHまたはトークンで)徴収できる全ての手数料はこのアドレスに送信され、作成者はこのアドレスから徴収した手数料を引き出すことができる。マーケット作成者に返還される可能性のある資金(<a href="#validity-bond">有効性保証金</a>、<a href="#no-show-bond">不参保証金</a>)も、このメールボックスに送信される。</p>
+<h2>マーケットの判決(Market Resolution)<a name="market-resolution"></a></h2>
+<p>マーケットの判決とは、<a href="#market">マーケット</a>が<a href="#finalized-market">ファイナライズ</a>する一連の行為のことである。<a href="#designated-reporting">指名レポーティング</a>、<a href="#open-reporting">公開レポーティング</a>、<a href="#dispute-round">争議ラウンド</a>、<a href="#fork">フォーク</a>、これらはその例である。</p>
+<h2>最大表示価格(Maximum Display Price)<a name="maximum-display-price"></a></h2>
+<p>最大表示価格(別称<code>maxDisplayPrice</code>)とは、<a href="#market">マーケット</a>の<a href="#share">シェア</a>で取り得る最大の価格のことである。<a href="#yesno-market">Yes/Noマーケット</a>、<a href="#categorical-market">カテゴリカルマーケット</a>では、この値は常に1である。<a href="#scalar-market">スカラーマーケット</a>では、<a href="#market-creator">マーケット作成者</a>によって設定されたレンジの上端値が設定される。</p>
+<h2>最小表示価格(Minimum Display Price)<a name="minimum-display-price"></a></h2>
+<p>最小表示価格(別称<code>minDisplayPrice</code>)とは、<a href="#market">マーケット</a>の<a href="#share">シェア</a>で取り得る最小の価格のことである。<a href="#yesno-market">Yes/Noマーケット</a>、<a href="#categorical-market">カテゴリカルマーケット</a>では、この値は常に0である。<a href="#scalar-market">スカラーマーケット</a>では、<a href="#market-creator">マーケット作成者</a>によって設定されたレンジの下端値が設定される。</p>
+<h2>ティック数(Number of Ticks)<a name="number-of-ticks"></a></h2>
+<p>ティック数とは、<a href="#market">マーケット</a>での<a href="#minimum-display-price">最小表示価格</a>から<a href="#maximum-display-price">最大表示価格</a>の間で取り得る価格の数、あるいは、<a href="#tick">ティック</a>のことであり、単一の<a href="#complete-set">コンプリートセット</a>を購入するためにエスクロー取引しなくてはならない<a href="#atto-prefix">attoETH</a>の量のことでもある(訳注：つまりコンプリートセット1個の価格は(<code>ティック数 * 1 attoREP</code> )ということである。下記のデフォルト値の場合、例えばYes/Noマーケットであればアウトカム数は 2 なので、ティック数は 10,000 となる。したがってコンプリートセット1個の価格は 10,000 * 1 attoREP = 10,000 attoREP となる)。マーケットのティック数は、無効を除いた<a href="#outcome">アウトカム</a>数の倍数でなくてはならない。これは、<a href="#invalid-outcome">無効</a>マーケットの<a href="#payout-set">ペイアウトセット</a>内の各アウトカムに該当する要素に、ティック数をアウトカム数で除算した値を格納するためである(つまり、無効となったマーケットでの<a href="#settlement">決済</a>時に、各<a href="#share">シェア</a>の保有者へ同額の払い戻しを保証するためである)。</p>
+<p><a href="#market-creator">マーケット作成者</a>は、作成時にこのティック数を選択することができるが、UIではこの機能は隠されておりデフォルト値が適用される。デフォルト値は以下の通り。</p>
+<table>
+<thead>
+<tr>
+<th>アウトカム数</th>
+<th>ティック数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>10,000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10,002</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10,000</td>
+</tr>
+<tr>
+<td>5</td>
+<td>10,000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>10,002</td>
+</tr>
+<tr>
+<td>7</td>
+<td>10,003</td>
+</tr>
+<tr>
+<td>8</td>
+<td>10,000</td>
+</tr>
+</tbody>
+</table>
+<p>これらのデフォルト値は、シェアの単価がよりヒューマンフレンドリーになるよう設定した。マーケットの<a href="#finalized-market">ファイナライズ</a>後、ウィニングシェアをマーケットコントラクトに送信することで、ティック数と同量のattoETHを払い戻し決済することができる。マーケットが無効でファイナライズした場合は、各シェアをマーケットコントラクトに送信することで、(ティック数/アウトカム数)と同量のattoETHを払い戻すことができる。</p>
+<p>シェアのコンプリートセットが決済された時に払い戻された<a href="#atto-prefix">attoETH</a>は、トレーダーがその<a href="#position">ポジション</a>をクローズして払い戻しを行う前にそこから<a href="#settlement-fees">決済手数料</a>が徴収される。トレーダーがより多い払い戻しを受け取るにはより多い手数料を払う必要があるため、決済手数料は比例的であると言える。オーダーの価格は、0からそのマーケットで設定されているティック数までの間で設定可能である。</p>
+<p>スカラーマーケットでは、マーケット作成者が設定した精度とレンジにより、ティック数が決定する。具体的には、ティック数は (レンジ最大値 - レンジ最小値) / 精度 で表すことができる。例えば、マーケット作成者がアウトカムのレンジが<code>[-10, 30]</code>、精度を0.01で設定したとすると、ティック数は(30-(-10)) / 0.01、すなわち、4,000となる。</p>
+<h2>未決済建玉(Open Interest)<a name="open-interest"></a></h2>
+<p>未決済建玉とは、<a href="#market">マーケット</a>に存在する全ての<a href="#complete-set">コンプリートセット</a>の価格の合計であり、全てのマーケットの未決済建玉の金額はデノミネーショントークンで統一される(現時点ではETHが使用される)。</p>
+<h2>オープンオーダー(Open Order)<a name="open-order"></a></h2>
+<p>オープンオーダーとは、<a href="#order-book">オーダーブック</a>にある<a href="#order">オーダー</a>の内、まだ<a href="#fill-order">約定</a>していないオーダーのことである。</p>
+<h2>公開レポーティング(Open Reporting)<a name="open-reporting"></a></h2>
+<p>公開レポーティングは、<a href="#market">マーケット</a>の<a href="#designated-reporter">指名レポーター</a>が<a href="#designated-report">指名レポート</a>を行わず、代わりに他のユーザーが<a href="#outcome">アウトカム</a>に<a href="#rep">REP</a>を<a href="#first-public-reporter-stake">ステーク</a>することで<a href="#first-public-report">ファーストパブリックレポート</a>を行った場合に発生する。</p>
+<h2>公開レポーティングフェーズ(Open Reporting Phase)<a name="open-reporting-phase"></a></h2>
+<p><a href="#market">マーケット</a>の<a href="#designated-reporter">指名レポーター</a>が<a href="#designated-report">指名レポート</a>を行わなかった場合、そのマーケットは公開レポーティングフェーズに突入する。このフェーズでは、任意のユーザーが<a href="#outcome">アウトカム</a>に<a href="#rep">REP</a>を<a href="#first-public-reporter-stake">ステーク</a>し、<a href="#first-public-report">ファーストパブリックレポート</a>を行うことができる。</p>
+<h2>オーダー(Order)<a name="order"></a></h2>
+<p>オーダーとは、「ある価格である量の<a href="#share">シェア</a>を取引したい」というユーザーの注文を記録したものである。オーダーには、<a href="#bid-order">買い注文</a>／<a href="#ask-order">売り注文</a>の二種類があり、それぞれ、シェアの購入／売却の要求を意味する。また、<a href="#order-creator">オーダー作成者</a>はオーダー時に取引で使用する通貨またはシェアをエスクローする必要がある。オーダーに保持される情報は次の通り：オーダーの種類、対象の<a href="#market">マーケット</a>、対象の<a href="#outcome">アウトカム</a>、オーダー作成者のアドレス、シェアの単価、トレードするシェアの量、オーダー作成時のブロックナンバー、エスクローした通貨またはシェアの量。</p>
+<h2>オーダーブック(Order Book)<a name="order-book"></a></h2>
+<p>オーダーブックとは、ある<a href="#market">マーケット</a>のその時点で有効な全<a href="#open-order">オープンオーダー</a>の集合のことである。<a href="#order">オーダー</a>は<a href="#order-creator">オーダー作成者</a>によってこのオーダーブックに配置され、<a href="#order-filler">オーダー約定者</a>により<a href="#fill-order">約定</a>される。オーダーは、<a href="#bid-order">買い注文</a>、<a href="#ask-order">売り注文</a>、といった種類により分かれており、さらに<a href="#outcome">アウトカム</a>単位で分かれている。</p>
+<h2>オーダー作成者(Order Creator)<a name="order-creator"></a></h2>
+<p>オーダー作成者とは、<a href="#order-book">オーダーブック</a>に<a href="#order">オーダー</a>を出した人のことである。オーダー作成者は、<a href="#market">マーケット</a>の<a href="#outcome">アウトカム</a>の<a href="#share">シェア</a>を売買するために、このオーダーを通じて通貨やシェアをエスクロー取引する。</p>
+<h2>オーダー約定者(Order Filler)<a name="order-filler"></a></h2>
+<p>オーダー約定者とは、<a href="#order-book">オーダーブック</a>上にある<a href="#open-order">オープンオーダー</a>の一部あるいはすべてを<a href="#fill-order">約定</a>するユーザーのことである。オーダー約定者はオープンオーダーを約定し、通貨または<a href="#share">シェア</a>でのエスクロー取引(項目「<a href="#order">オーダー</a>」を参照)を完了させるため、通貨またはシェアを送信する。</p>
+<h2>アウトカム(Outcome)<a name="outcome"></a></h2>
+<p>アウトカムとは、<a href="#market">マーケット</a>のイベントとして起こり得る結果のことである。例えば、"2032年11月1日にニューヨーク市のどこかで雨が降るという報告が、www.weather.com で行われるか？" というマーケットのアウトカムは、はい、いいえ、<a href="#invalid-outcome">無効</a>、の3つとなる。無効が選択されるのは、2032年11月1日以前に世界が爆発してしまう場合や、ニューヨーク市や www.weather.com が存在しないためにアウトカムを検証できない場合である。より現実的な話をすると、マーケットの質問が漠然としすぎている場合に無効が選択される。例えば "神は存在するか？" といったマーケットでは誰も正確に答えられないため、無効が選択される可能性が極めて高い。</p>
+<h2>ペアレントユニバース(Parent Universe)<a name="parent-universe"></a></h2>
+<p>ペアレントユニバースとは、そのペアレントユニバースで<a href="#fork">フォーク</a>が発生することにより<a href="#child-universe">チャイルドユニバース</a>を生成した<a href="#universe">ユニバース</a>のことであり、ペアレントユニバースは新しいユニバースの生成源である。言い換えると、<a href="#locked-universe">ロック済みユニバース</a>は、フォークにより作成されたユニバースのペアレントユニバースである。</p>
+<h2>パーティシペーショントークン(Participation Token)<a name="participation-token"></a></h2>
+<p><a href="#fee-window">手数料期間</a>中はいつでもこのパーティシペーショントークンを<a href="#rep">REP</a>で購入することができる。手数料期間が終われば、Augurが手数料期間中に収集した<a href="#reporting-fee">レポーティング手数料</a>(ETH建)の一部を、このパーティシペーショントークンと引き換えに受け取ることができる。パーティシペーショントークンの購入量が多いほどレポーティング手数料の受け取り額は大きくなる。ユーザーはこのトークンを必ずしも購入する必要はなく、<a href="#market">マーケット</a>が<a href="#fork">フォーク</a>するような場合にユーザーに参加を促すことが目的で設けられた。</p>
+<h2>ペイアウトディストリビューションハッシュ(Payout Distribution Hash)<a name="payout-distribution-hash"></a></h2>
+<p>ペイアウトディストリビューションハッシュとは、<a href="#payout-set">ペイアウトセット</a>のSHA-3ハッシュである。<a href="#market">マーケット</a>でイベントが発生したがまだファイナライズしていない場合、暫定ペイアウトディストリビューションハッシュと呼ぶ。マーケットがファイナライズすると、ウィニングペイアウトディストリビューションハッシュとなる。<a href="#forked-market">フォークマーケット</a>の当ハッシュは、<a href="#child-universe">チャイルドユニバース</a>と<a href="#parent-universe">ペアレントユニバース</a>の識別子となる。</p>
+<h2>ペイアウトセット(Payout Set)<a name="payout-set"></a></h2>
+<p>ペイアウトセットとは、Augurのスマートコントラクトの関数内では"Payout Numerators(ペイアウト計算機)"と呼ばれており、<a href="#market">マーケット</a>の<a href="#outcome">アウトカム</a>数(訳注：アウトカム「無効」は除く)と等しい要素数を持つ配列のことである。各要素の値の取り得る値は、0～<a href="#number-of-ticks">ティック数</a>である。また、全要素の合計はティック数と等しい。</p>
+<p>例えば、1,000 <a href="#tick">ティック</a>の<a href="#yesno-market">Yes/Noマーケット</a>での<a href="#report">レポート</a>で、配列のインデックス0に該当するアウトカムに<a href="#rep">REP</a>をステークしたとすると、ペイアウトセットは <code>[1000, 0]</code> となる。ペイアウトセットはペイアウト時の分配の内訳であり、そのマーケットが<a href="#finalized-market">ファイナライズ</a>した際に各<a href="#share">シェア</a>にどれだけ支払いをしなくてはならないかを示したものである。上記の例では、Payout Numeratorsの値は 1000 と 0 であり、インデックス1に該当するアウトカムの<a href="#share">シェア</a>値が <code>0</code> であるため、インデックス0に該当するアウトカムにのみ支払いが行われる。有効なペイアウトセットはSHA-3ハッシュアルゴリズムでハッシュ化され、このハッシュ化を<a href="#payout-distribution-hash">ペイアウトディストリビューションハッシュ</a>という。</p>
+<p><a href="#categorical-market">カテゴリカルマーケット</a>におけるハッシュセットの考え方は、アウトカムが最大8個であるという点を除いてYes/Noマーケットと同様である。例えばカテゴリカルマーケットのティックが 8,000 であれば、そのペイアウトセットは <code>[0, 0, 8000, 0, 0, 0, 0, 0]</code> となる。このカテゴリカルマーケットのアウトカムが<a href="#invalid-outcome">無効</a>でファイナライズすると <code>[1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]</code> となる。(これは、無効でファイナライズした場合、各<a href="#share">シェア</a>の保有者に対して<a href="#settlement">決済</a>時に同額の支払いが行われるよう、ティック数をアウトカム数で割った値を各配列に設定するためである。)</p>
+<p><a href="#scalar-market">スカラーマーケット</a>におけるハッシュセットの考え方は、Yes/Noマーケットやカテゴリカルマーケットとは異なる。スカラーマーケットが取り得るアウトカムは、 0 <a href="#short-position">ショートポジション</a>の場合)と 1 (<a href="#long-position">ロングポジション</a>の場合)の二つだけである。例として、<a href="#minimum-display-price">最小表示価格</a>が 0ドル 、<a href="#maximum-display-price">最大表示価格</a>が 100ドル 、ティック数が 10,000 のスカラーマーケットを考えてみる。レポートされたアウトカムが 75ドル だとすると、このマーケットでのペイアウトセットは以下のようにして求められる。</p>
+<ol>
+<li>レポートされたアウトカムを最小表示価格で標準化するために、レポートされたアウトカムを最小表示価格で減算する。上記例の場合、 75 - 0 = 75 となる。</li>
+<li>レポートされたアウトカムを 0 から 1 の間に調整するため、(最大表示価格 - 最小表示価格) で除算する。上記例の場合、 75 / (100 - 0) = 0.75 となる。</li>
+<li>レポートされたアウトカムをティック数で調整するため、ティック数で積算する。上記例の場合、0.75 * 10000 = 7500 となる。</li>
+<li>他のアウトカムの値を求めるため、ティック数から3.で求めた値を減算する。上記例の場合、 10000 - 7500 = 2500 となる。</li>
+<li>インデックス0がショートポジション、インデックス1がロングポジションとして、求めた値を配列にセットする。上記例の場合、<code>[2500, 7500]</code> となる。<br />注記:スカラーマーケットでペイアウトセットを算出する時、整数演算であれば、2. と 3. の順番は逆になる(すなわち整数演算では常に除算より先に積算が行われる)。</li>
+</ol>
+<h2>ポジション(Position)<a name="position"></a></h2>
+<p>ポジションとは、個人が所有する<a href="#share">シェア</a>の量(<a href="#long-position">ロングポジション</a>)、あるいは、個人が借りてから売却するシェアの量(<a href="#short-position">ショートポジション</a>)のことである。ポジションで利益を上げられるかは<a href="#market">マーケット</a>の動き次第である。ポジションはオープン、クローズができる。"オープンポジション"とは、現在ポジション保有者がシェアを保有していることを意味し、"クローズポジション"とは、シェアを払い戻して通貨に交換することを意味する。"ショートポジションをクローズする"とは、不足しているシェアを購入することであり、"ロングポジションをクローズする"とは、所有するシェアを売却することである。</p>
+<h2>ファイナライズ後待ち期間(Post-Finalization Waiting Period)<a name="post-finalization-Waiting-Period"></a></h2>
+<p><a href="#market">マーケット</a>が<a href="#finalized-market">ファイナライズ</a>すると、ユーザーがトレードを再開するために3日間待つ必要がある。この待ち期間は、セキュリティ上の予防措置として設けられた。攻撃者によって、あるマーケットが不当なアウトカムにファイナライズされた場合、Augur開発チームは攻撃が再開されるまでに3日の猶予があり、この間に攻撃を察知しAugurのシステムを<a href="#developer-mode">停止</a>することも可能である。</p>
+<h2>REP</h2>
+<p>REPは、Reptation、Reptationトークン、REPトークンとも呼ばれ、Augurの<a href="#decentralized-oracle">分散型オラクル</a>システムで使用される通貨である。REPはマーケット作成時の<a href="#no-show-bond">不参保証金</a>の支払いで使用されるほか、<a href="#market">マーケット</a>の<a href="#designated-report">指名レポート</a>や<a href="#first-public-report">ファーストパブリックレポート</a>での<a href="#outcome">アウトカム</a>へのステークでも使用される。また、マーケットが<a href="#dispute-round-phase">争議ラウンドフェーズ</a>であれば、<a href="#dispute">争議</a>のために<a href="#tentative-outcome">暫定アウトカム</a>以外のアウトカムへのステークを行う際に使用される。さらに、<a href="#participation-tokens">パーティシペーショントークン</a>の購入時にも使用される。</p>
+<h2>レポート(Report)<a name="report"></a></h2>
+<p>レポート、あるいはレポーティングとは、<a href="#end-time">終了日時</a>を過ぎた<a href="#market">マーケット</a>の特定の<a href="#outcome">アウトカム</a>に対して <a href="#rep">REP</a>をステークすることである。<a href="#designated-report">指名レポート</a>を行うこと、<a href="#first-public-report">ファーストパブリックレポート</a>を行うこと、<a href="#tentative-outcome">暫定アウトカム</a>以外のアウトカムにREPを<a href="#dispute-stake">ステーク</a>して<a href="#dispute">争議</a>を行うこと、を表す用語として用いられる。</p>
+<h2>レポーター(Reporter)<a name="reporter"></a></h2>
+<p>レポーターとは、<a href="#end-time">終了日時</a>を過ぎた<a href="#market">マーケット</a>の特定の<a href="#outcome">アウトカム</a>に対して <a href="#rep">REP</a>をステークしたREP保有者のことである。レポーターには、<a href="#designated-reporter">指名レポーター</a>、<a href="#first-public-reporter">ファーストパブリックレポーター</a>、<a href="#tentative-outcome">暫定アウトカム</a>以外のアウトカムにREPを<a href="#dispute-stake">ステーク</a>して<a href="#dispute">争議</a>を行ったユーザー、が含まれる。</p>
+<h2>レポーティング手数料(Reporting Fee)<a name="reporting-fee"></a></h2>
+<p>レポーティング手数料は、Augurの<a href="#decentralized-oracle">分散型オラクル</a>システムへの支払いのために使用される。<a href="#share">シェア</a>が<a href="#settlement">決済</a>された時に、シェア所有者へ払い戻す前にETH建てで<a href="#settlement-fees">決済手数料</a>が徴収される。この決済手数料には、<a href="#creator-fee">作成者手数料</a>とレポーティング手数料が含まれる。</p>
+<p>レポーティング手数料は、Augurに存在する全マーケットの<a href="#open-interest">未決済建玉</a>額と<a href="#rep">REP</a>価格から動的に決定される。レポーティング手数料は、REP時価総額がAugurに存在する全<a href="#market">マーケット</a>の<a href="#open-interest">未決済建玉</a>額の7.5倍となるよう設定される。つまり、REP時価総額が十分に大きくない場合は<a href="#reporting-fee">レポーティング手数料</a>は上昇し(ただし33％を超過することは無い)、REP時価総額が目標値を超過する場合は下落する(ただし 0.01%を下回ることはない)。</p>
+<p>レポーティング手数料は、<a href="#fee-window">手数料期間</a>の<a href="#reporting-fee-pool">レポーティング手数料プール</a>へと送られ、<a href="#report">レポート</a>を行ったREP保有者への支払いに使用される。</p>
+<h2>レポーティング手数料プール(Reporting Fee Pool)<a name="reporting-fee-pool"></a></h2>
+<p>全ての<a href="#reporting-fee">レポーティング手数料</a>(ETH建て)は<a href="#fee-window">手数料期間</a>中に収集され、レポーティング手数料プールに蓄えられる。手数料期間の終了時に、その手数料期間中に<a href="#rep">REP</a>を<a href="#dispute-stake">ステーク</a>したユーザーに対して、そのステークしたREPの量に応じてこのプールから支払いを行う。このようにして、手数料期間中に参加したユーザーはその期間中に収集された決済手数料の一部を受け取ることとなる。ここで言う参加とは、<a href="#designated-reporting">指名レポーティング</a>、<a href="#open-reporting">公開レポーティング</a>、<a href="#dispute">争議</a>、あるいは単純に<a href="#participation-token">パーティシペーショントークン</a>を購入することを指す。</p>
+<h2>スカラーマーケット(Scalar Market)<a name="scalar-market"></a></h2>
+<p>スカラーマーケットとは、<a href="#outcome">アウトカム</a>が広い幅を取り得る<a href="#market">マーケット</a>のことである。例えば、"finance.yahoo.comでは、2062年1月3日午後1時のMicrosoft Corporationの株価はいくらであるか？" のようなマーケットはスカラーマーケットである。この例のマーケットでは、<a href="#minimum-display-price">最小表示価格</a>は0ドル、<a href="#maximum-display-price">最大表示価格</a>は500ドルが設定されるだろう。このマーケットでは、この2つの値の間であれば<a href="#settlement">決済</a>が可能である。場合によっては、このような幅のあるアウトカムは不要で選択肢が何個かあれば事足りるかもしれない。その場合は、<a href="#yesno-market">Yes/Noマーケット</a>、あるいは<a href="#categorical-market">カテゴリカルマーケット</a>にした方がよい。</p>
+<h2>決済(Settlement)<a name="settlement"></a></h2>
+<p>トレーダーは、次の2つの方法の内いずれかにより<a href="#position">ポジション</a>をクローズすることができる。一つ目は、所有する<a href="#share">シェア</a>をEtherと引き換えに他のトレーダーと交換する方法。二つ目は、Augurのスマートコントラクトで決済する方法である。マーケットのすべてのシェアは、そのマーケットの<a href="#number-of-ticks">ティック数</a>に等しいEtherがAugurでエスクローされた時に、<a href="#complete-set">コンプリートセット</a>の一部として生成される。Etherをエスクローから取り出すには、トレーダーはAugurに対してコンプリートセットを提供するか、もし<a href="#market">マーケット</a>が既に<a href="#finalized-market">ファイナライズ</a>しているならばウィニング<a href="#outcome">アウトカム</a>のシェアを提供しなくてはならない。</p>
+<p>例えば、アウトカム A と B が存在する未ファイナライズのマーケットを考えてみる。アリスはアウトカムAのシェアを保有しそれを0.7ETHで売却したいと希望しており、ボブはアウトカムBのシェアを保有しそれを0.3ETHで売却したいと希望していたとする。するとAugurはこれらの<a href="#order">オーダー</a>をマッチングし、参加者からAとBのシェアを収集する。その後Augur はアリスに0.7ETH(実際はここから<a href="#settlement-fees">決済手数料</a>が差し引かれる)を与え、ボブに0.3ETH(同様に決済手数料が差し引かれる)を与える。</p>
+<p>二つ目の例として、ウィニングアウトカムがAとファイナライズされたマーケットを考えてみる。アリスはアウトカムAのシェアを保有しその換金を希望している。アリスはそのアウトカムA のシェアをAugurに送り、1ETH(決済手数料が差し引かれる)を受け取る。</p>
+<p><a href="#creator-fee">作成者手数料</a>と<a href="#reporting-fee">レポーティング手数料</a>から成る<a href="#settlement-fees">決済手数料</a>が、決済時に徴収される。</p>
+<h2>決済手数料(Settlement Fees)<a name="settlement-fees"></a></h2>
+<p>決済手数料とは、<a href="#complete-set">コンプリートセット</a>が<a href="#settlement">決済</a>された時に徴収される手数料のことであり、<a href="#creator-fee">作成者手数料</a>と<a href="#reporting-fee">レポーティング手数料</a>の二つから構成される。</p>
+<h2>シェア(Share)<a name="share"></a></h2>
+<p>シェアとは、<a href="#market">マーケット</a>の<a href="#outcome">アウトカム</a>に与えられた価値の部分的な所有権である。<a href="#order-creator">オーダー作成者</a>と<a href="#order-filler">オーダー約定者</a>の両方が<a href="#order">オーダー</a>を完了されるためにマーケットへETHを送信すると、シェアの<a href="#complete-set">コンプリートセット</a>が生成される。コンプリートセットがマーケットに売り戻されると、シェアは<a href="#settlement">決済</a>される。</p>
+<h2>シェアユニット(Share Unit)<a name="share-unit"></a></h2>
+<p><a href="#share">シェア</a>と同じ意味で用いられる。<a href="#market">マーケット</a>の<a href="#outcome">アウトカム</a>に対応したシェアの、分割不可能な最小単位である。</p>
+<h2>ショートポジション(Short Position)<a name="short-position"></a></h2>
+<p>「ショートポジションをオープンする」とは、信用売り・空売りのことであり、実際には所有していない株券などを売却することである。信用売りは株価などが将来的に下落するという見込みのもと行われ、より低い価格で買い戻すことで利益を出す。</p>
+<p>Augurでは、<a href="#yesno-market">Yes/Noマーケット</a>で"No"の<a href="#outcome">アウトカム</a>に賭けることにより、"Yes"のアウトカムをショートすることになる。これは事実上、所有しない"Yes"の<a href="#share">シェア</a>を売却することと同じである。<a href="#yesno-market">Yes/Noマーケット</a>と<a href="#scalar-market">スカラーマーケット</a>の場合、これらのシェアはマイナス値としてポートフォリオに記載される(ポートフォリオとは、Augurのユーザーインターフェースの一種であり、ポジションの一覧を見るための画面である)。</p>
+<p>ショートポジションをオープンするためのコストは、((コンプリートセットのコスト - シェアの単価) * シェア数) で算出され、ここでの<a href="#complete-set">コンプリートセット</a>とは、あるマーケットの全アウトカムのシェアのことである。例えば、Yes/Noマーケットの"Yes"は発生しそうにないと考えるユーザーがおり、将来的に"Yes"のシェアの価格は下落すると予想しているとする。もしこのマーケットのコンプリートセットのコストが 1 ETH で、アウトカム"Yes"のシェアのコストが 0.55 ETH だとすると、アウトカム"Yes"の1シェアのショートポジションをオープンするためのコストは、(1 - 0.55) 1 = 0.45 ETH となる。</p>
+<p>トレーディングに関するより詳細な情報は、項目「<a href="#trading">トレーディング</a>」を参照してほしい。</p>
+<h2>暫定アウトカム(Tentative Outcome)<a name="tentative-outcome"></a></h2>
+<p>暫定アウトカムとは、未<a href="#finalized-market">ファイナライズ</a><a href="#market">マーケット</a>でレポートされた<a href="#outcome">アウトカム</a>のことである。言い換えると、<a href="#designated-reporter">指名レポーター</a>や<a href="#first-public-reporter">ファーストパブリックレポーター</a>が<a href="#rep">REP</a>をステークしたアウトカム、あるいは、<a href="#dispute-round">争議ラウンド</a>において既存の暫定アウトカムに対して<a href="#dispute">争議</a>が行われ、十分なREPがステークされることで新たな暫定アウトカムとなったアウトカムのことである。マーケットが争議されることなく争議ラウンドを終えるか、あるいは、マーケットが<a href="#fork-period">フォーク期間</a>を経た場合、マーケットは<a href="#finalized-market">ファイナライズ</a>し、その時点での暫定アウトカムが<a href="#final-outcome">ファイナルアウトカム</a>となる。</p>
+<h2>理論的REP量(Theoretical REP Supply)<a name="theoretical-rep-supply"></a></h2>
+<p>ある<a href="#universe">ユニバース</a>の理論的<a href="#rep">REP</a>量とは、そのユニバースへ移行されたREP量と、そのユニバースの<a href="#parent-universe">ペアレントユニバース</a>の理論的REP量の和である。</p>
+<h2>ティック(Tick)<a name="tick"></a></h2>
+<p>ティックとは、証券や先物などの価格変化の最小単位のことである。ある<a href="#market">マーケット</a>の<a href="#minimum-display-price">最小表示価格</a>～<a href="#maximum-display-price">最大表示価格</a>の価格帯の中で<a href="#outcome">アウトカム</a>の<a href="#share">シェア</a>が取り得る価格のことである。<a href="#market-creator">マーケット作成者</a>は、マーケット作成時に<a href="#number-of-ticks">ティック数</a>の入力を求められる。このティック数は、そのマーケットでシェアの<a href="#complete-set">コンプリートセット</a>を一つ購入するのに <a href="#atto-prefix">attoETH</a> がいくつ必要であるかを表している。例えば、最低表示価格が -10 、最高表示価格が 30 の<a href="#scalar-market">スカラーマーケット</a>で、ティック数には 4000 がセットされたとすると、このマーケットでコンプリートセットを1つ購入するには 4000 attoETH 支払わなくてはならないということである。シェアのコンプリートセットの<a href="#settlement">決済</a>を行えば 4000 attoETH が払い出される(なお、この払い出し前に<a href="#settlement-fees">決済手数料</a>が差し引かれる)。また、このマーケットでは -10 から 30 の範囲内で、4000箇所の価格が指定可能である。例えばこのマーケットでは、1.24 や 1.25 のような価格の<a href="#order">オーダー</a>は有効であるが、5.725 などのオーダーは無効である。</p>
+<h2>トピック(Topic)<a name="topic"></a></h2>
+<p>トピックとは、<a href="#market">マーケット</a>を分類するためのキーワードのことである。すべてのマーケットにはこのトピックがあり、より細分化するために最大2個のサブトピックが設定可能である。例えば"スーパーボウル100でニューヨーク・ジャイアンツは勝利するか？"というマーケットの場合、トピックには"スポーツ"、サブトピックには"アメリカンフットボール"と"NFL"が設定されるだろう。これらのトピックは<a href="#market-creator">マーケット作成者</a>により設定され、マーケットが作成後に変更することはできない。</p>
+<h2>ユニバース(Universe)<a name="universe"></a></h2>
+<p>Augur上のすべての<a href="#market">マーケット</a>はユニバースに所属する。Augurのローンチ直後は唯一のユニバースである「<a href="#genesis-universe">ジェネシスユニバース</a>」だけが存在するが、極めて稀なイベントである<a href="#fork">フォーク</a>が発生することにより新たなユニバースが生成される。フォークが発生すると、そのユニバースは<a href="#locked-universe">ロック済みユニバース</a>となり、新たに複数のチャイルドユニバースが生成される。これらの<a href="#child-universes">チャイルドユニバース</a>は、<a href="#forked-market">フォークマーケット</a>の各<a href="#outcome">アウトカム</a>に対応している。フォークフェーズが開始すると、<a href="#rep">REP</a>保有者は、生成された複数のチャイルドユニバースの中から、どのチャイルドユニバースに保有するREPを移行するか選択することができる。移行は必須ではないが、ロック済みユニバースでは新規にマーケットを作成することはできないため、将来的に<a href="#report">レポート</a>するマーケットは無くなり、手数料を稼ぐことができなくなる。<a href="#fork-period">フォーク期間</a>終了後、全てのチャイルドユニバースは稼働可能となる。</p>
+<h2>有効性保証金(Validity Bond)<a name="validity-bond"></a></h2>
+<p>有効性保証金は、<a href="#market">マーケット</a>作成時に<a href="#market-creator">マーケット作成者</a>によって支払われる。この保証金はETH建てで支払われ、<a href="#market">マーケット</a>の<a href="#final-outcome">ファイナルアウトカム</a>が<a href="#invalid-outcome">無効</a>以外になればマーケット作成者に返却される。</p>
+<p>有効性保証金の金額は、無効に<a href="#finalized-market">ファイナライズ</a>したマーケットの割合に基づいて動的に決定する。Augurでは無効にファイナライズするマーケットの割合の目標値を 1% に設定している。つまり、直前の手数料期間中に無効でファイナライズしたマーケットの割合が 1% より大きければ、有効性保証金は上昇し、1% より小さければ下降する。</p>
+<p>ローンチ後に迎える初回の<a href="#fee-window">手数料期間</a>では、有効性保証金は 0.01 ETH に設定される。その後、直前の手数料期間でマーケットの 1% 超が無効でファイナライズされた場合、 有効性保証金は増加する。逆に、直前の手数料期間でマーケットの 1% 未満が無効でファイナライズされた場合、有効性保証金は減少する (ただし 0.01 ETH を下回ることはない)。 厳密には、直前の手数料期間において無効にファイナラ イズしたマーケットの割合を ν、直前の手数料期間での有効性保証金額を b<sub>v</sub> とすると、現在の手数料期間における有効性保証金の最大値は、max {1/100, b<sub>v</sub>f(ν)}となる。</p>
+<h2>次の手数料期間待ちフェーズ(Waiting for the Next Fee Window to Begin Phase)<a name="waiting-for-the-next-fee-Window-to-Begin-Phase"></a></h2>
+<p><a href="#designated-report">指名レポート</a>、<a href="#first-public-report">ファーストパブリックレポート</a>のいずれかが行われると、現在の7日間に及ぶ<a href="#fee-window">手数料期間</a>が終了するまでの間、<a href="#market">マーケット</a>は「次の手数料期間待ちフェーズ」に入る。このフェーズが終了すると、マーケットは次の手数料期間の<a href="#dispute-round-phase">争議ラウンドフェーズ</a>に移行する。</p>
+<h2>ウィニングユニバース(Winning Universe)<a name="winning-universe"></a></h2>
+<p><a href="#fork">フォーク</a>が発生し、<a href="#fork-period">フォーク期間</a>が終了するまでに最も<a href="#rep">REP</a>が移行された<a href="#child-universe">チャイルドユニバース</a>を、そのフォークにおけるウィニングユニバースという。</p>
+<h2>Yes/Noマーケット(Yes/No Market)<a name="yesno-market"></a></h2>
+<p>Yes/Noマーケットとは、2つだけの<a href="#outcome">アウトカム</a>を持つ<a href="#market">マーケット</a>のこと(アウトカムには<a href="#invalid-outcome">無効</a>もあるがここではカウントしない)。Yes/Noマーケットは、はい/いいえ、の答えを求めるマーケットであり、もしこれ以上のアウトカムが必要であれば<a href="#categorical-market">カテゴリカルマーケット</a>、または、<a href="#scalar-market">スカラーマーケット</a>を使用すべきである。</p>
