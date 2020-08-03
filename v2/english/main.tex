@@ -175,7 +175,7 @@ All unsuccessful dispute stake is returned to the original owners at the end of 
 
 \subsubsection{Waiting for Next Fee Window to Begin}
 
-If a market's tentative outcome is disputed with a bond greater than 0.02\% of all REP but less than 2.5\% of all REP, then the market enters the waiting for next fee window to begin phase (Fig.~\ref{fig:reporting}c), before undergoing another dispute round. The purpose of this is simply to slow down the dispute process as the bonds get larger -- giving honest participants more time to crowdfund the larger dispute bond. This reduces the risk of a critical failure mode: one where the oracle resolves incorrectly because honest participants didn't have time to raise the funds needed to dispute a false tentative outcome.
+If a market's tentative outcome is disputed with a bond greater than or equal to 0.02\% of all REP but less than 2.5\% of all REP, then the market enters the waiting for next fee window to begin phase (Fig.~\ref{fig:reporting}c), before undergoing another dispute round. The purpose of this is simply to slow down the dispute process as the bonds get larger -- giving honest participants more time to crowdfund the larger dispute bond. This reduces the risk of a critical failure mode: one where the oracle resolves incorrectly because honest participants didn't have time to raise the funds needed to dispute a false tentative outcome.
 
 During this phase, reporting for the market is on hold until end of the current fee window.  Once the next fee window begins, the market enters the \textit{dispute round} phase.
 
