@@ -14,4 +14,4 @@ If you're interested in contributing edits to the v2 whitepaper, please submit p
 
 ### Questions
 
-If you have any questions, please join the [Augur Discord](https://augur.net/invite) and ask in the #translations channel. 
+If you have any questions, please join the [Augur Discord](https://augur.net/invite) and ask in the #whitepaper channel. 
