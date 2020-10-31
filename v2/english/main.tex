@@ -65,7 +65,7 @@ Augur has a native token, Reputation (REP)\footnote{REP is an ERC777 token on th
 
 By owning REP, and participating in the accurate reporting on the outcomes of events, token holders are entitled to a portion of the fees on the platform.  Each staked REP token entitles its holder to an equal portion of Augur's market fees.  The more REP a reporter owns, and reports correctly with, the more fees they will earn for their work in keeping the platform secure.
 
-Although REP plays a central role in Augur's operations, it is not used to trade in Augur's markets. Traders will never need to own or use REP, as they are not required to participate in the reporting process.
+Although REP plays a central role in Augur's operations, it is not used to trade in Augur's markets. Traders are not required to participate in the reporting process, so they will never need to own or use REP.
 
 \begin{figure*}
 \includegraphics[width=0.8\textwidth]{overview.pdf}
@@ -336,7 +336,7 @@ The reporting fees are determined as follows.  Let $r$ be the reporting fee from
 
 \subsection{Leveraging the Threat of a Fork}\label{section:leveraging_the_threat_of_a_fork}
 
-As mentioned above, forks are a disruptive and slow way for markets to reach finalization.  Rather than using the forking process to resolve every market, Augur leverages the \textit{threat} of a fork to resolve markets efficiently.
+As mentioned above, forks are a disruptive and slow way for markets to reach finalization.  Rather than using the forking process to resolve every market, Augur leverages the \textit{threat} of a fork to resolve markets efficiently~\cite{Williams_2019}.
 
 Recall that any stake successfully disputing an outcome in favor of the market's final outcome will receive a 40\% ROI on their dispute stake.\footnote{Measured in REP that exists in a universe that corresponds to the market's final outcome; see Theorem \ref{th:roi_guarantee} in Appendix \ref{section:finalization_time}.}  In the event of a fork, any REP staked on any of the market's false outcomes should lose all economic value, while any REP staked on the market's true outcome is rewarded with 40\% more REP in the child universe that corresponds to the market's true outcome (regardless of the outcome of the fork).  Therefore, if pushed to a fork, REP holders who dispute false outcomes in favor of true outcomes will always come out ahead, while REP holders who staked on false outcomes will see their REP lose all economic value.
 
