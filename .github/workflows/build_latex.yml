@@ -1,0 +1,38 @@
+name: Build LaTeX document
+on: [push, pull_request]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: main.tex
+          working_directory: v2/english
+          pre_compile: |
+            rm augur-whitepaper-v2.pdf
+          post_compile: |
+            mv main.pdf augur-whitepaper-v2.pdf
+      - name: Check pdf files
+        run: |
+          file ./v2/english/augur-whitepaper-v2.pdf | grep -q ' PDF '
+      - name: Commit files
+        id: commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "github-actions"
+          git add v2/english/augur-whitepaper-v2.pdf
+          if [ -z "$(git status --porcelain)" ]; then
+             echo "::set-output name=push::false"
+          else
+             git commit -m "Compiled pdf" -a
+             echo "::set-output name=push::true"
+          fi
+        shell: bash
+      - name: Push changes
+        if: steps.commit.outputs.push == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
