@@ -15,7 +15,7 @@ jobs:
         root_file: main.tex
         working_directory: v2/english
         pre_compile: |
-          rm augur-whitepaper-v2.pdf
+          rm -f augur-whitepaper-v2.pdf
         post_compile: |
           mv main.pdf augur-whitepaper-v2.pdf
     - name: Check pdf file
