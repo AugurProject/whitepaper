@@ -23,7 +23,7 @@ jobs:
         file ./v2/english/augur-whitepaper-v2.pdf | grep -q ' PDF '
     - name: Bump version and push tag
       id: bump_version
-      uses: anothrNick/github-tag-action@1.26.0
+      uses: anothrNick/github-tag-action@1.39.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
