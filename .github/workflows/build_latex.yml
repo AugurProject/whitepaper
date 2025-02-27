@@ -6,7 +6,25 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@7884fcad6b5d53d10323aee724dc68d8b9096a2e
-    - name: Build LaTeX document
+    - name: Build v1 document
+      uses: xu-cheng/latex-action@2031f1a94940bfe35904fc1782bf18a9bdafc127
+      with:
+        root_file: main.tex
+        working_directory: v1/english
+        pre_compile: |
+          rm -f augur-whitepaper-v1.pdf
+        post_compile: |
+          mv main.pdf augur-whitepaper-v1.pdf
+    - name: Check v1 file
+      run: |
+        file ./v1/english/augur-whitepaper-v1.pdf | grep -q ' PDF '
+    - name: Upload v1 file
+      uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+      with:
+        name: augur-whitepaper-v1.pdf
+        if-no-files-found: error
+        path: ./v1/english/augur-whitepaper-v1.pdf
+    - name: Build v2 document
       uses: xu-cheng/latex-action@2031f1a94940bfe35904fc1782bf18a9bdafc127
       with:
         root_file: main.tex
@@ -15,10 +33,10 @@ jobs:
           rm -f augur-whitepaper-v2.pdf
         post_compile: |
           mv main.pdf augur-whitepaper-v2.pdf
-    - name: Check pdf file
+    - name: Check v2 file
       run: |
         file ./v2/english/augur-whitepaper-v2.pdf | grep -q ' PDF '
-    - name: Upload PDF file
+    - name: Upload v2 file
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
       with:
         name: augur-whitepaper-v2.pdf
@@ -44,9 +62,20 @@ jobs:
         release_name: ${{ steps.bump_version.outputs.new_tag }}
         draft: false
         prerelease: false
-    - name: Upload Release Asset
+    - name: Upload v1 Release Asset
       if: ${{ github.ref == 'refs/heads/master' }}
-      id: upload-release-asset 
+      id: upload-v1-release-asset
+      uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./v1/english/augur-whitepaper-v1.pdf
+        asset_name: augur-whitepaper-v1.pdf
+        asset_content_type: application/pdf
+    - name: Upload v2 Release Asset
+      if: ${{ github.ref == 'refs/heads/master' }}
+      id: upload-v2-release-asset
       uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
