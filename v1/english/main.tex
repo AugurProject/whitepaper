@@ -1,0 +1,434 @@
+\documentclass[12pt,floatfix,reprint,nofootinbib,amsmath,amssymb,epsfig,pre,floats,letterpaper,groupedaffiliation]{revtex4-1}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{dcolumn}
+\usepackage[english]{babel}
+\usepackage{enumitem}
+\usepackage{epstopdf}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{inconsolata}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{footmisc}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{inconsolata}
+\usepackage[left=0.7in, right=0.66in, top=53pt]{geometry} % Adjust the margins
+\usepackage{microtype}
+\microtypesetup{protrusion=true, expansion=true, activate={true,nocompatibility}, final}
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{assumption}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{observation}{Observation}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\titlespacing{\subsection}{0pt}{24pt}{14pt plus 1pt}
+\titlespacing*{\subsubsection}{0pt}{22pt plus 12pt minus 12pt}{15pt}
+\linespread{0.928}
+\setlength{\skip\footins}{34pt plus 34pt minus 12pt}
+\interfootnotelinepenalty=10000
+\setlength{\parskip}{2pt}
+\interlinepenalty=0
+\hyphenpenalty=0
+
+\begin{document}
+
+\flushbottom
+
+
+\title{Augur: a Decentralized Oracle and Prediction Market Platform}
+
+\author{Jack Peterson}
+\author{Joseph Krug}
+\author{Micah Zoltu}
+\author{Austin K. Williams}
+\author{Stephanie Alexander}
+\affiliation{Forecast Foundation}
+\date{July 12, 2018}
+
+\begin{abstract}
+
+\vspace{0pt plus 20pt}
+Augur is a trustless, decentralized oracle and platform for prediction markets. The outcomes of Augur's prediction markets are chosen by users that hold Augur's native Reputation token, who stake their tokens on the actual observed outcome and, in return, receive settlement fees from the markets. Augur's incentive structure is designed to ensure that honest, accurate reporting of outcomes is always the most profitable option for Reputation token holders. Token holders can post progressively-larger Reputation bonds to dispute proposed market outcomes. If the size of these bonds reaches a certain threshold, Reputation splits into multiple versions, one for each possible outcome of the disputed market; token holders must then exchange their Reputation tokens for one of these versions. Versions of Reputation which do not correspond to the real-world outcome will become worthless, as no one will participate in prediction markets unless they are confident that the markets will resolve correctly. Therefore, token holders will select the only version of Reputation which they know will continue to have value: the version that corresponds to reality.
+\end{abstract}
+
+\maketitle
+
+Augur is a trustless, decentralized oracle and predic-\linebreak tion market platform. In a prediction market, \mbox{individuals} can speculate on the outcomes of future events; those who\linebreak forecast the outcome correctly win money, and those who forecast incorrectly lose money~\cite{Wolfers_2004,Surowiecki_2005,Hanson_2006}. The price of a prediction market can serve as a precise and well-calibrated indicator of how likely an event is to occur~\cite{Pennock_2001,Manski_2004,Wolfers_2005,Goel_2010}.
+
+Using Augur, people will have the ability to trade in prediction markets at very low cost. The only significant\linebreak expenses participants assume is compensation to mar-\linebreak ket creators and to users that report on the outcomes of markets once the event has taken place. The result is\linebreak a prediction market where trust requirements, friction,\linebreak and fees will be as low as competitive market forces can drive them.
+
+Historically, prediction markets have been centralized. The simplest way to aggregate trades in a prediction mar-\linebreak ket is for a trustworthy entity to maintain a ledger; sim\-ilarly, the simplest way to determine the outcome of an event and distribute payouts to traders is for an impar-\linebreak tial, trusted judge to determine the outcomes of the mar\-kets. However, centralized prediction markets have many risks and limitations: they do not allow global participa-\linebreak tion, they limit what types of markets can be created or\linebreak traded, and they require traders to trust the market op\-erator to not steal funds and to resolve markets correctly.
+
+Augur aims to resolve markets in a fully decentralized way. Decentralized, trustless networks, such as Bitcoin~\cite{Nakamoto_2008} and Ethereum~\cite{Buterin_2013}, eliminate the risk that self-interest will turn into corruption or theft. The only role of the Augur\linebreak developers is to publish smart contracts to the Ethereum network. The Augur contracts are totally automated:\linebreak the developers do not have the ability to spend funds\linebreak that are held in escrow on-contract, do not control how markets resolve, do not approve or reject trades or other transactions on the network, cannot undo trades, can-\linebreak not modify or cancel orders, etc. The Augur \textit{oracle} allows information to be migrated from the real world to\linebreak a blockchain without relying on a trusted intermediary. Augur will be the world's first decentralized oracle.
+
+\section{HOW AUGUR WORKS}
+
+\vspace{0pt plus 20pt}
+
+Augur markets follow a four-stage progression: \textit{cre-\linebreak ation}, \textit{trading}, \textit{reporting}, and \textit{settlement}. Anyone can\linebreak create a market based on any real-world event. Trading\linebreak begins immediately after market creation, and all users\linebreak are free to trade on any market. After the event on which the market is based has occurred, the outcome of the\linebreak event is determined by Augur's oracle. Once the out-\linebreak come is determined, traders can close out their positions and collect their payouts.
+
+\vspace{0pt plus 20pt}
+
+Augur has a native token, Reputation (REP). REP is needed by market creators and by reporters when they report on the outcome of markets created on the Augur platform. Reporters report on a market by \textit{staking} their REP on one of the market's possible outcomes. By doing this, the reporter declares that the outcome on which the stake was placed matches the real-world outcome of the market's underlying event. The consensus of a market's reporters is considered the ``truth" for the purpose of determining the market's outcome. If a reporter's report of a market's outcome does not match the consensus reached by the other reporters, Augur redistributes the REP staked on the non-consensus outcome by this re-\linebreak porter to the reporters that reported with the consensus.
+
+\vspace{0pt plus 20pt}
+
+By owning REP, and participating in the accurate re\-porting on the outcomes of events, token holders are enti-\linebreak tled to a portion of the fees on the platform. Each staked REP token entitles its holder to an equal portion of Au\-gur's market fees. The more REP a reporter owns, and reports correctly with, the more fees they will earn for\linebreak their work in keeping the platform secure.
+
+\vspace{0pt plus 20pt}
+
+\begin{figure*}
+\includegraphics[width=0.82\textwidth]{1.pdf}
+\caption{Simplified outline of the lifetime of a prediction market.}
+\label{fig:overview}
+\end{figure*}
+
+Although REP plays a central role in Augur's opera-\linebreak tions, it is not used to trade in Augur's markets. Traders will never need to own or use REP, as they are not re-\linebreak quired to participate in the reporting process.\pagebreak
+
+
+
+\subsection{Market Creation}
+
+Augur allows anyone to create a market about any upcoming event. The \textit{market creator} sets the \textit{event end time} and chooses a \textit{designated reporter} to report the outcome of the event. The designated reporter does not unilat-\linebreak erally decide the outcome of the market; the community\linebreak always has an opportunity to dispute and correct the\linebreak designated reporter's report.
+
+Next, the market creator chooses a \textit{resolution source} that reporters should use to determine the outcome. The resolution source may simply be ``common knowledge",\linebreak or it may be a specific source, such as ``The United States Department of Energy", \texttt{bbc.com}, or the address of a\linebreak particular API endpoint.\footnote{For example, if a market on ``The high tempera-\linebreak ture (in degrees Fahrenheit) on April 10, 2018 at the\linebreak San Francisco International Airport, as reported by\linebreak Weather Underground" specifies a resolution source of \url{https://www.wunderground.com/history/airport/KSFO/2018/4/10/DailyHistory.html}, reporters would simply go to that URL and enter the high temperature displayed there as their report.} They also set a \textit{creator fee}, which is the fee paid to the market creator by traders who settle with the market contract (see Section~\ref{section:settlement} for details on fees). Finally, the market creator posts two bonds:\linebreak the \textit{validity bond}, and the \textit{designated report no-show bond} (also referred to as the \textit{no-show bond} for brevity).
+
+The validity bond is paid in ETH and is returned to the market creator if the market resolves to any out-\linebreak come other than \textit{invalid}.\footnote{An \textit{invalid market} is a market determined to be invalid by reporters because none of the outcomes listed by the market creator is cor\-rect, or because the market wording is ambiguous or subjective; see Section~\ref{section:ambiguous_or_subjective_markets} for discussion.} The validity bond incentivizes market creators to create markets based on well-defined events with objective, unambiguous outcomes. The size\linebreak of the validity bond is set dynamically, based on the pro\-portion of invalid outcomes in recent markets.\footnote{See Appendix~E.1 for details.}
+
+{\spaceskip=1.07\fontdimen2\font plus 1pt minus 1pt
+The no-show bond, paid in REP, is returned to the market creator if the market's designated reporter actually reports during the first three days after the market's \textit{event end time}. If the designated reporter does not submit their report during the allotted 3-day window, then the market creator forfeits the no-show bond and it\linebreak is given to the \textit{first public reporter} who reports on the market (see Section~I.C.6). This incentivizes the market\linebreak creator to choose a reliable designated reporter, which should help markets resolve quickly.} 
+
+\vspace{\baselineskip}In the event that the designated reporter fails to re\-port, the no-show bond is given to the first public re-\linebreak porter in the form of stake on their reported outcome, so that the first public reporter receives the no-show bond if and only if they report correctly. As with the validity bond, the no-show bond is adjusted dynamically based\linebreak on the proportion of designated reporters who failed to report on time during the previous fee window.\footnote{See Appendix~E.2 for details.}
+
+The market creator creates the market and posts all required bonds via a single Ethereum transaction. Once the transaction is confirmed, the market is live and trad-\linebreak ing begins.
+
+\subsection{Trading}
+
+Market participants forecast the outcomes of events by trading \textit{shares} of those market outcomes. A \textit{complete set of shares} is a collection of shares that consists of one share of each possible valid outcome of the event~\cite{Clark_2014}. Complete sets are created by Augur's on-contract matching engine as needed to complete trades.
+
+For example, consider a market that has two possible outcomes, \texttt{A} and \texttt{B}. Alice is willing to pay 0.7 ETH for a share of \texttt{A} and Bob is willing to pay 0.3 ETH for a share of \texttt{B}.\footnote{Initially, trades in Augur's markets will use Ethereum's native coin, Ether (ETH). Subsequent releases of Augur will include support for markets denominated in arbitrary tokens issued on the Ethereum network, including shares of other markets as well as tokens pegged to fiat currencies (``stablecoins"), if/when these become available.} First, Augur matches these orders and collects a total of 1 ETH from Alice and Bob.\footnote{\label{footnote:complete_set_cost}The 1 ETH figure is used here for ease of discussion. The actual cost of a complete set of shares is much smaller than this; see \texttt{docs.augur.net/\#number-of-ticks} for details.} Then Augur creates a complete set of shares, giving Alice the share of \texttt{A} and Bob the share of \texttt{B}. This is how shares of outcomes come into existence. Once the shares are created, they can be traded freely.
+
+The Augur trading contracts maintain an order book\linebreak for every market created on the platform. Anybody can create a new order or fill an existing order at any time. Orders are filled by an automated matching engine that exists within Augur's smart contracts. Requests to buy or sell shares are fulfilled immediately if there is a matching order already on the order book. It may be filled\linebreak by buying shares from or selling shares to other partic\-ipants, which, may involve issuing new complete sets or closing out existing complete sets. Augur's matching engine always sequesters the minimum amount of shares and/or cash needed to cover the value at risk. If there is no matching order, or the request can be only partially filled, the remainder is placed on the order book as a new order.
+
+Orders are never executed at a worse price than the\linebreak limit price set by the trader, but may be executed at a better price. Unfilled and partially-filled orders can be removed from the order book by the order's creator at\linebreak any time. Fees are paid by traders only when complete sets of shares are sold; settlement fees are discussed in more detail in Section~\ref{section:settlement}.
+
+While most trading of shares is expected to happen before market settlement, shares can be traded any time after market creation. All Augur assets -- including shares in market outcomes, participation tokens, shares in dis\-pute bonds, and even ownership of the markets them-\linebreak selves -- are transferable at all times.
+
+\subsection{Reporting}
+
+Once a market's underlying event occurs, the outcome must be determined in order for the market to finalize\linebreak and begin settlement. Outcomes are determined by Augur's oracle, which consists of profit-motivated reporters, who simply report the actual, real-world outcome of the event. Anyone who owns REP may participate in the reporting and disputing of outcomes. Reporters whose reports are consistent with consensus are financially rewarded, while those whose reports are not consistent with consensus are financially penalized (see Section I D 3).
+
+\subsubsection{Fee Windows}
+
+Augur's reporting system runs on a cycle of consecu\-tive 7-day long \textit{fee windows}. All fees collected by Augur during a given fee window are added to the \textit{reporting fee pool} for that fee window. At the end of the fee window, the reporting fee pool is paid out to REP holders who participated in the reporting process. Reporters receive rewards in proportion to the amount of REP they staked during that fee window. Participation includes: staking during an initial report, disputing a tentative outcome,\linebreak or purchasing \textit{participation tokens}.
+
+\subsubsection{Participation Tokens}
+
+During any fee window, REP holders may purchase any number of participation tokens for one attorep\footnote{One attorep is $10^{-18}$ REP.} each. At the end of the fee window, they may redeem their\linebreak \vspace{\baselineskip} participation tokens for one attorep each, in addition to a proportional share of the fee window's \textit{reporting fee pool}. If there were no actions (e.g., submitting a report or disputing a report submitted by another user) needed of a reporter, the reporter may purchase participation tokens to indicate that they showed up for the fee window. Just like staked REP, participation tokens may be redeemed by their owners for a pro rata portion of fees in this fee window.
+
+As discussed in Section II, it is important that REP holders are ready to participate in market resolution in the event of a fork. The participation token provides an incentive for REP holders to monitor the platform at least once per week, and, thus, be ready to participate if the need arises. Even REP holders who do not want to participate in the reporting process are incentivized to check-in with Augur once per 7-day fee window in order to buy participation tokens and collect fees. This regular, active checking-in will ensure that they are familiar with how to use Augur, will be aware of forks when they occur, and thus should be more ready to participate in forks\linebreak when they happen.
+
+\subsubsection{Market State Progression}
+
+Augur markets can be in seven different states after creation. The potential states, or ``phases'', of an Augur market are as follows:
+
+\begin{itemize}
+\item Pre-reporting
+\item Designated Reporting
+\item Open Reporting
+\item Waiting for the Next Fee Window to Begin
+\item Dispute Round
+\item Fork
+\item Finalized
+\end{itemize}
+
+The relationship between these states can be seen in Fig.~2.
+
+\subsubsection{Pre-reporting}
+
+\begin{figure*}
+    \includegraphics[width=0.805\textwidth]{2.pdf}
+    \caption{Reporting flowchart.}
+    \label{fig:reporting}
+\end{figure*}
+
+The \textit{pre-reporting} or \textit{trading} phase (Fig.~1) is the time period that begins after trading has begun in the market, but before the market's event has come to pass. Gener-\linebreak ally, this is the most active trading period for any given\linebreak Augur market. Once the event end date has passed, the market enters the \textit{designated reporting} phase (Fig.~2a).
+
+\subsubsection{Designated Reporting}
+
+When creating a market, market creators are required\linebreak to choose a designated reporter and post a no-show bond. During the designated reporting phase (Fig.~2a) the market's designated reporter has up to three days to report\linebreak on the outcome of the event. If the designated reporter fails to report within the allotted three days, the market creator forfeits the no-show bond, and the market automatically enters the \textit{open reporting} phase (Fig.~2b).
+
+If the designated reporter submits a report on time, then the no-show bond is returned to the market creator.\linebreak The designated reporter is required to post the desig-\linebreak nated reporter stake\footnote{See appendix E 3 for details on the size of the designated reporter stake.} on its reported outcome, which it\linebreak will forfeit if the market finalizes to any outcome other\linebreak than the one they reported.\footnote{Forfeited stake is added to the reporting fee pool of the market's assigned fee window, and is used to reward honest reporters and disputers; see Section I D 3 for details.} As soon as the designated reporter submits its report, the market enters the \textit{waiting\linebreak for next fee window to begin} phase (Fig.~2c), and the re\-ported outcome becomes the market's \textit{tentative outcome}.
+
+\subsubsection{Open Reporting}
+
+If the designated reporter fails to report within the\linebreak allotted three days, the market creator forfeits the no-show bond, and the market immediately enters the \textit{open reporting} phase (Fig.~2b). As soon as the market enters the open reporting phase, anyone can report the outcome of the market. When the designated reporter fails to\pagebreak \linebreak report, the first reporter who reports on the outcome of\linebreak a market is called the market's \textit{first public reporter}.
+
+The market's first public reporter receives the forfeited no-show bond in the form of stake on their chosen out-\linebreak come, so they may claim the no-show bond only if their reported outcome agrees with the market's final outcome. The first public reporter does not need to stake any of their own REP when reporting the outcome of the mar\-ket. In this way, any market whose designated reporter fails to report is expected to have its outcome reported by \textit{someone} very soon after entering the open reporting phase.
+
+Once an \textit{initial report} has been received by the ini\-tial reporter (whether it was the designated reporter or first public reporter), the reported outcome becomes the market's tentative outcome, and the market enters the \textit{waiting for next fee window to begin} phase (Fig.~2c).
+
+\subsubsection{Waiting for Next Fee Window to Begin}
+
+Once the market receives its initial report, it enters the waiting for next fee window to begin phase (Fig.~2c). During this phase, reporting for the market is on hold un-\linebreak til end of the current fee window. Once the next fee win\-dow begins, the market enters the \textit{dispute round} phase.
+
+\subsubsection{Dispute Round}
+
+The dispute round (Fig.~2d) is a 7-day period during which any REP holder has the opportunity to dispute the market's \textit{tentative outcome}.\footnote{The fact that the dispute rounds coincide with the fee windows is purely a matter of convenience; in principle, dispute rounds and\linebreak fee window durations could be different.} (At the beginning of a dispute round, a market's tentative outcome is the out-\linebreak come that will become the market's final outcome if it\linebreak is not successfully disputed by REP holders.) A dispute consists of \textit{staking} REP (referred to as \textit{dispute stake} in\linebreak this context) on an outcome \textit{other than} the market's current tentative outcome. A dispute is \textit{successful} if the to-\linebreak tal amount of dispute stake on some outcome meets the \textit{dispute bond size} required for the current round. The dispute bond size is computed as follows.
+
+Let $A_n$ denote the total stake over all of this market's outcomes at the beginning of dispute round $n$. Let $\omega$\linebreak be any market outcome \textit{other than} the market's tenta-\linebreak tive outcome at the beginning of this dispute round. Let $S(\omega, n)$ denote the total amount of stake on outcome $\omega$ at the beginning of dispute round $n$. Then the size of the \textit{dispute bond} needed to successfully dispute the current tentative outcome in favor of the new outcome $\omega$ during round $n$ is denoted $B(\omega, n)$ and is given by:
+
+\beq
+B(\omega, n) = 2A_n - 3S(\omega, n)
+\eeq
+
+The bond sizes are chosen this way to ensure a fixed ROI of 50\% for reporters who successfully dispute false outcomes (see Section II D).
+
+The dispute bonds need not be paid in their entirety by a single user. The Augur platform allows participants to crowdsource dispute bonds. Any user who sees an incorrect tentative outcome can dispute that outcome by staking REP on an outcome other than the tentative outcome. If any outcome (other than the tentative outcome) accumulates enough dispute stake to fill its dispute bond, the current tentative outcome will be successfully dis-\linebreak puted.
+
+In the case of a successful dispute, the market will\linebreak either undergo another dispute round, or it will enter\linebreak the \textit{fork} state (Fig.~2e). If the size of the filled dispute bond is greater than 2.5\% of all REP, then the market will enter the fork state. If the size of the filled dispute bond is less than 2.5\% of all REP, then the newly chosen outcome becomes the market's new tentative outcome, and the market undergoes another dispute round.
+
+All dispute stake is held in escrow during the dispute round. If a dispute bond is unsuccessful, then the dis-\linebreak pute stake is returned to its owners at the end of the dispute round. If no dispute is successful during the 7-day dispute round, the market enters the \textit{finalized} state (Fig.~2f), and its tentative outcome is accepted as its \textit{fi\linebreak nal outcome}. A market's final outcome is the tentative outcome that passes through a dispute round without being successfully disputed, or is determined via a fork. Augur's contracts treat final outcomes as \textit{truth} and pay out accordingly.
+
+All unsuccessful dispute stake is returned to the origi-\linebreak nal owners at the end of every dispute round. All success\-ful dispute stake is applied to the outcome it championed, and remains there until the market is finalized (or until a fork occurs in some other Augur market). All dispute stake (whether successful or unsuccessful) will receive a portion of the reporting fee pool\footnote{Any reporting fees and validity bonds collected during a fee window get added to that fee window's reporting fee pool. At the end of the fee window, the reporting fee pool is paid out to users in proportion to the amount of REP they staked during that fee window.} from the current fee window.
+
+\subsubsection{Fork}
+
+The fork state (Fig.~2e) is a special state that lasts up to 60 days. Forking is the market resolution method of last resort; it is a very disruptive process and is intended to be a rare occurrence. A fork is caused when there is a market with an outcome with a successfully-filled dispute bond of at least 2.5\% of all REP. This market is referred to as the \textit{forking market}\pagebreak.
+
+When a fork is initiated, a 60-day\footnote{Forking periods can be less than 60 days: a forking period ends\linebreak when either 60 days have passed, or more than 50\% of all genesis REP is migrated to some child universe.} \textit{forking period} be\-gins. Disputing for all other non-finalized markets is put on hold until the end of this forking period. The forking period is much longer than the usual fee window because the platform needs to provide ample time for REP hold-\linebreak ers and service providers (such as wallets and exchanges)\linebreak to prepare. A fork's final outcome cannot be disputed.
+
+Every Augur market and all REP tokens exist in some\linebreak \textit{universe}. REP tokens can be used to report on outcomes (and thus earn fees) \textit{only} for markets that exist in the\linebreak same universe as the REP tokens. When Augur first launches, all markets and all REP will exist together in the \textit{genesis universe}.
+
+When a market forks, new universes are created. Forking creates a new \textit{child universe} for each possible out-\linebreak come of the forking market (including \texttt{Invalid}, as dis-\linebreak cussed in Section I D 2). For example, a ``Yes/No'' market has 3 possible outcomes: \texttt{Yes}, \texttt{No}, and \texttt{Invalid}. Thus, a ``Yes/No'' forking market will create three new child universes: universe \texttt{Yes}, universe \texttt{No}, and universe \texttt{Invalid}. Initially, these newly created universes are empty: they contain no markets or REP tokens.
+
+When a fork is initiated, the \textit{parent universe} becomes permanently \textit{locked}. In a locked universe, no new markets may be created. Users may continue trading shares in markets in locked universes, and markets in a locked universe may still receive their initial reports. However, no reporting rewards are paid out there, and markets in locked universes cannot be finalized. In order for markets or REP tokens in the locked universe to be useful, they must first be migrated to a child universe.
+
+Holders of REP tokens in the parent universe may migrate their tokens to a child universe of their choice. This choice should be considered carefully, because migration is one-way; it cannot be reversed. Tokens cannot be sent from one sibling universe to another. \textit{Migration is a permanent commitment of REP tokens to a particular mar-\linebreak ket outcome}. REP tokens that migrate to different child universes ought to be considered entirely separate tokens, and service providers like wallets and exchanges ought to list them as such.
+
+When a fork is initiated, all REP staked on all non-forking markets is \textit{unstaked} so that it is free to be mi-\linebreak grated to a child universe during the forking period.\footnote{The only exception is the REP staked by the initial reporter when they made the initial report. That REP remains staked on the\linebreak initial reported outcome and is automatically migrated to the child universe that wins the fork.}
+
+Whichever child universe receives the most migrated REP by the end of the forking period becomes the \textit{win-\linebreak ning universe}, and its corresponding outcome becomes\linebreak the final outcome of the forking market. Un-finalized\linebreak\vspace{\baselineskip}\vspace{0.3336\baselineskip} markets in the parent universe may be migrated only to\break\break the winning universe and, if they have received an initial report, are reset back to the waiting for next fee window to begin phase.
+
+\textit{There is no time limit to migrate tokens from the par\-ent universe to a child universe.} Tokens may be mi-\linebreak grated after the forking period, but they will not count towards the determination of the winning universe. To\linebreak encourage greater participation during the forking pe-\linebreak riod, all token holders who migrate their REP within 60 days of the start of a fork will receive 5\% additional REP\linebreak in the child universe to which they migrated\footnote{This occurs even when the forking period has ended early due to more than 50\% of all REP being migrated to some child universe.}. This re-\linebreak ward is paid for by minting new REP tokens.\footnote{The effect of this addition to the money supply of REP is small. For example, if 20\% of all existing REP is migrated during the forking period of a fork, this bonus would result in a 1\% increase in the money supply of REP. Moreover, forks are expected to be exceedingly rare events.}
+
+\textit{Reporters that have staked REP on one of the forking\linebreak market's outcomes cannot change their position during a\linebreak fork.} REP that was staked on an outcome in the par-\linebreak ent universe can be migrated only to the child universe that corresponds to that outcome. For example, if a re\-porter helped fulfill a successful dispute bond in favor\linebreak of outcome \texttt{A} during some dispute round, then the REP they have staked on outcome \texttt{A} can only be migrated to universe \texttt{A} during a fork.
+
+\textit{Sibling universes are entirely disjoint.} REP tokens\linebreak that exist in one universe cannot be used to report on events or earn rewards from markets in another universe. Since users presumably will not want to create or trade on\linebreak markets in a universe whose oracle is untrustworthy, REP that exists in a universe that does not correspond to objective reality is unlikely to earn its owner any fees, and therefore should not hold any significant market value. Therefore, REP tokens migrated to a universe which does not correspond to objective reality should hold no market value, regardless of whether or not the objectively false universe ends up being the winning universe after\linebreak a fork. This has important security consequences, which we discuss in Section II.
+
+\subsubsection{Finalized}
+
+A market enters the finalized state (Fig.~2f) if it passes through a 7-day dispute round without having its tenta\-tive outcome successfully disputed, or after completion of\linebreak a fork. The outcome of a fork cannot be disputed and is always considered final at the end of the forking period. Once a market is finalized, traders can settle their po\-sitions directly with the market. When a market enters the finalized state, we refer to its chosen outcome as the \textit{final outcome}.
+
+\subsection{Market Settlement}\label{section:settlement}
+
+A trader can close their position in one of two ways: by selling the shares they hold to another trader in exchange for currency, or by settling their shares with the market. Recall that every share comes into existence as part of a complete set when a total of 1 ETH has been escrowed with Augur.\footref{footnote:complete_set_cost} To get that 1 ETH out of escrow, traders must give Augur either a complete set or, if the market has finalized, a share of the winning outcome. When this exchange happens we say traders are \textit{settling with the market contract}.
+
+For example, consider a non-finalized market with pos\-sible outcomes \texttt{A} and \texttt{B}. Suppose Alice has a share of out-\linebreak come \texttt{A} that she wants to sell for 0.7 ETH and Bob has a share of outcome \texttt{B} that he wants to sell for 0.3 ETH. First, Augur matches these orders and collects the \texttt{A} and\linebreak \texttt{B} shares from the participants. Then Augur gives 0.7\linebreak ETH (minus fees) to Alice and 0.3 ETH (minus fees) to\linebreak Bob.
+
+As a second example, consider a finalized market whose winning outcome is \texttt{A}. Alice has a share of \texttt{A} and wants to cash it in. She sends her share of \texttt{A} to Augur and in return receives 1 ETH (minus fees).
+
+\subsubsection{Settlement Fees}
+
+The only time Augur levies fees is when market par\-ticipants are settling with the market contract. Augur levies two fees during settlement: the creator fee, and\linebreak the reporting fee. Both of these fees are proportional to the amount being paid out. So, in the pre-finalized settlement example above, where Alice receives 0.7 ETH and Bob receives 0.3 ETH, Alice would pay 70\% of the fees while Bob would pay 30\%.
+
+The creator fee is set by the market creator during market creation, and is paid to the market creator upon settlement. The reporting fee is set dynamically (see Sec\-tion~\ref{section:market_cap_nudges}) and is paid to reporters who participate in the reporting process.
+
+\subsubsection{Settlement of Invalid Markets}
+
+In the event that a market resolves as \texttt{Invalid}, traders who settle with the market contract receive an equal amount of ETH for shares of each outcome. If the market had $N$ possible outcomes (not including the \texttt{Invalid} outcome), and the cost of a complete set of shares was $C$ ETH, then traders will receive $C/N$ ETH for each share settled with the market contract.
+\footnote{Trades cannot simply be unwound if a market resolves as Invalid\linebreak due to technical limitations. Shares of outcomes are just tokens, which can be traded directly between users; the ETH and shares are thus not under Augur's control and cannot be given back to the original owner if the market finalizes as Invalid.}
+
+\subsubsection{Reputation Redistribution}\label{section:rep_redistribution}
+
+If a market finalizes without initiating a fork, all REP staked on any outcome other than the market's final\linebreak outcome is forfeited and distributed to the users who staked on the market's final outcome in proportion to\linebreak the amount of REP they staked. The dispute bond sizes are chosen such that anyone who successfully disputes\linebreak an outcome in favor of the market's final outcome is rewarded with a 50\% ROI on their dispute stake.\footnote{See Theorem~3 in Appendix~A.} This is a strong incentive for reporters to dispute false tentative outcomes.
+
+\section{Incentives and Security}\label{section:incentives_and_security}
+
+There is a strong relationship between the market cap of REP and the trustworthiness of Augur's forking proto-\linebreak col. If the market cap of REP is large enough\footnote{See Section~\ref{section:integrity_forking_protocol} for details.}, and at-\linebreak tackers are economically rational, then the outcome that wins the fork should correspond to objective reality. In fact, it would be possible for Augur to function properly without using designated reporters and dispute rounds. Using \textit{only} the forking process, the oracle would report truthfully.
+
+However, forks are disruptive and time consuming. A fork takes up to 60 days to resolve a single market, and can resolve only one market at a time. During the 60 days in which the forking market is being resolved, all\linebreak other non-finalized markets are put on hold.\footnote{Traders can continue trading on those markets, but those markets cannot finalize until after the forking period.} Service providers have to update, and REP holders have to migrate their REP to one of the new child universes. Therefore, forks should be used only when they are absolutely necessary. Forking is the nuclear option.
+
+Fortunately, once it has been established that forks can be trusted to determine truth, incentives can be used to encourage participants to behave honestly without hav-\linebreak ing to actually initiate a fork. \textit{It is the credible threat of\linebreak a fork, and the belief that the fork will resolve correctly,\linebreak that are the cornerstones of Augur's incentive system.}
+
+Next, we discuss the conditions under which the fork\-ing system can be trusted to determine truth. We then discuss the incentive system and how it encourages quick and correct resolution of all markets.
+
+\subsection{Integrity of the Forking Protocol}\label{section:integrity_forking_protocol}
+
+Here we discuss the reliability of the forking process\linebreak and the conditions under which it can be trusted. For\pagebreak\linebreak  ease of discussion, when referring to forks, we will refer\linebreak to the child universe that corresponds to objective reality\linebreak as the \texttt{True} universe, and any other child universe as a\linebreak \texttt{False} universe. We will refer to the child universe which receives the most REP migration during the forking pe\-riod as the winning universe and all other child universes as losing universes.
+
+Naturally, we always want the \texttt{True} universe to be the winning universe, and the \texttt{False} universes to be the losing universes. We say that the forking protocol has been suc-\linebreak cessfully attacked whenever a \texttt{False} universe ends up be\-ing the winning universe of a fork -- thus resulting in the forking market (and, potentially, all non-finalized mar-\linebreak kets) being paid out incorrectly.
+
+Our approach to securing the oracle is to arrange mat\-ters such that the maximum benefit to a successful at-\linebreak tacker is less than the minimum cost of performing the attack. We formalize this below.
+
+\subsubsection{Maximum Benefit to an Attacker}
+
+An attacker who successfully attacks the oracle would cause all non-finalized Augur markets to migrate to a\linebreak \texttt{False} universe. If the attacker controls the majority of\linebreak REP in the \texttt{False} universe, the attacker can then force all\linebreak non-finalized markets to resolve however she wants. In\linebreak the most extreme case, she would also be able to capture all funds escrowed in all of those markets.\footnote{This would require the attacker to capture \textit{all} shares of some given outcome, and then force the market to finalize to that outcome.}
+
+\begin{definition}
+We define, and denote by $I_a$, Augur's \textit{na-\linebreak tive open interest} as the value of the sum of all funds escrowed in unfinalized Augur markets.\footnote{This includes external markets that pay reporting fees to Augur.}
+\end{definition}
+
+\begin{definition}
+We define a \textit{parasitic market} as any mar-\linebreak ket that does not pay reporting fees to Augur, but does\linebreak resolve in accordance with the resolution of a native Au-\linebreak gur market.
+\end{definition}
+
+\begin{definition}
+We define, and denote by $I_p$, the \textit{parasitic open interest} as the value of the sum of all funds escrowed in all parasitic markets that resolve in accordance to non-finalized, native Augur mar-\linebreak kets.
+\end{definition}
+
+In the most extreme case, an attacker would also be\linebreak able to capture all funds in all parasitic markets which resolve in accordance to non-finalized, native Augur markets.
+
+\begin{observation}
+The maximum (gross) benefit to an at-\linebreak tacker who successfully attacks the oracle is $I_a + I_p$.
+\end{observation}
+
+\subsubsection{Parasitic Open Interest is Unknowable}
+
+Augur can accurately and efficiently measure $I_a$. However, $I_p$ cannot be known in general, as there may exist arbitrarily many offline parasitic markets, each with arbitrarily large open interest. Since the maximum possible benefit to an attacker includes the unknowable quantity $I_p$, one can never be objectively certain that the oracle\linebreak is secure against economically rational attackers.
+
+However, if we are willing to assert that $I_p$ is reason-\linebreak ably bounded in practice, then we can define conditions\linebreak under which we may assert that the oracle is secure.
+
+\subsubsection{Minimum Cost of a Successful Attack}
+
+Next, consider the cost of attacking the oracle. Let $P$ denote the price of REP. Let $\epsilon$ denote one attorep\footnote{One \textit{attorep} is $10^{-18}$ REP.}. Let $M$ denote the total amount of REP in existence (the ``money supply'' of REP). Let $S$ denote the proportion\linebreak of $M$ that will be migrated to the True universe during the forking period of a fork.
+
+Thus the product $SM$ represents the absolute amount of REP migrated to the True universe during the forking period of a fork, and the product $PM$ is the market cap of REP.
+
+Let $P_f$ denote the price of REP migrated to a \texttt{False} universe of the attacker's choosing. Note that if $P \leq P_f$ then the oracle would not be secure against economically rational attackers, because it would be at least as prof\-itable to migrate REP to the False universe as it would be to not migrate at all.
+
+\subsubsection{Integrity}
+
+\begin{assumption}
+Reporters that are not attackers will never migrate REP to a \texttt{False} universe during a fork.\footnote{There may be cases where some non-malicious reporters do migrate REP to a \texttt{False} universe accidentally or carelessly. However, such behavior is, in practice, indistinguishable from collaborating with an attacker.}
+\end{assumption}
+
+By design, a successful attack on the oracle requires more REP to be migrated to some \texttt{False} universe than to the \texttt{True} universe during the forking period of a fork. By assumption, only the attacker will migrate REP to a \texttt{False} universe. The amount of REP migrated to the \texttt{True} universe during the forking period is denoted by $SM$. Thus, for an attacker to be successful, they must migrate at least $SM + \epsilon$ REP. For simplicity, we will\linebreak ignore the negligible $\epsilon$, and say that a successful attack requires migrating at least $SM$ REP, which has a value\linebreak of $SMP$ before the migration, to some \texttt{False} universe.
+
+If an attacker migrates $SM$ REP during the forking period of a fork, they will receive $SM$ REP on the child universe to which they migrate.\footnote{In practice, the attacker would receive 1.05$SM$ REP in the child\linebreak universe because of the 5\% bonus for migrating within 60-days\linebreak of the start of a fork. We ignore the 5\% bonus here for ease of\linebreak discussion. To see a discussion that includes the 5\% bonus, see\linebreak Appendix~C.} If the attacker mi\-grates to a \texttt{False} universe then the value of those coins becomes $SMP_f$. Thus the minimum cost to the attacker is $(P - P_f)SM$.
+
+\begin{observation}
+The minimum amount of REP a suc-\linebreak cessful attacker must migrate to a \texttt{False} universe during\linebreak a fork is $SM$, which costs the attacker $(P - P_f)SM$.
+\end{observation}
+
+Note that if $S > \frac{1}{2}$ then an attack is \textit{impossible} because there does not exist enough REP outside of the \texttt{True} universe for any \texttt{False} universe to become the winning universe.
+
+Pitted against economically rational attackers, the or-\linebreak acle will resolve to outcomes that correspond to objec-\linebreak tive reality if the maximum benefit to an attacker is less than the minimum cost of attack. By observations 1\linebreak \& 2 we can see that this occurs whenever $S > \frac{1}{2}$ or\linebreak $I_a + I_p < (P - P_f)SM$. This gives us our formal def\-inition of integrity.
+
+\begin{definition}\label{ob:integrity_property}
+(Integrity Property) The forking protocol has \textit{integrity} whenever $S > \frac{1}{2}$ or whenever $I_a + I_p < (P - P_f)SM$.
+\end{definition}
+
+The above inequality can be solved for $PM$ to see the relationship between forking protocol integrity and the market cap of REP.
+
+\begin{theorem}\label{th:market_cap_security_theorem}
+(Market Cap Security Theorem) The fork-\linebreak ing protocol has integrity if and only if:
+\begin{enumerate}
+\item $S > \frac{1}{2}$, or
+\item $P_f < P$ and the market cap of REP is greater than $\frac{(I_a + I_p)P}{(P - P_f)S}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Suppose the forking protocol has integrity. Then, by definition, $S > \frac{1}{2}$ or $I_a + I_p < (P - P_f)SM$. Suppose $I_a + I_p < (P - P_f)SM$. Since $I_a + I_p \geq 0$ and $SM > 0$, we know that $P_f < P$. Then, solving $I_a + I_p < (P - P_f)SM$ for $PM$, we see that $\frac{(I_a + I_p)P}{(P - P_f)S} < PM$. Thus the first direction is proved.
+
+Now suppose that $S > \frac{1}{2}$, or that $P_f < P$ and $\frac{(I_a + I_p)P}{(P - P_f)S} < PM$. If $S > \frac{1}{2}$, then the forking protocol has integrity by definition. If $P_f < P$ and $\frac{(I_a + I_p)P}{(P - P_f)S} < PM$, then, solving the inequality for $I_a + I_p$, we see that $I_a + I_p < (P-P_f) SM$, and the forking protocol has integrity.
+\end{proof}
+
+\subsection{Our Assumptions and Their Consequences}
+
+We believe traders will not want to trade on Augur in a\linebreak universe where reporters have lied. We also believe that\linebreak market creators will not pay to create Augur markets\linebreak in a universe where there are no traders. In a universe without markets or trading, REP does not provide any dividends to those holding it. Therefore, we believe REP sent to a \texttt{False} universe will hold no non-negligible mar-\linebreak ket value and we model this by letting $P_f = 0$.
+
+We think it is reasonable to expect at least 20\% of existing REP to be migrated to the True outcome during the forking period of a fork, and we model this by letting $S \geq \frac{1}{5}$. We are also willing to accommodate parasitic\linebreak open interest as large as 50\% of the native open interest, and so we let $I_a \geq 2I_p$.
+
+Under these assumptions, Theorem~\ref{th:market_cap_security_theorem} tells us that the forking protocol has integrity whenever the market cap\linebreak of REP is at least 7.5 times the native open interest.\footnote{See Appendix~B for some alternative assumptions and their conse\-quences.}
+
+\subsection{Market Cap Nudges}\label{section:market_cap_nudges}
+
+Augur gets information about the price of REP via a collection of trusted third-party price oracles\footnote{In the future, Augur may be able to learn the price of REP without having to trust third parties. This is an active area of research.}. This gives Augur the ability to compute the current market cap of REP. Augur can also measure the current native open interest, and can thus determine what market cap ought to be targeted in order to meet Augur's integrity requirements.
+
+Every universe begins with a default reporting fee of 1\%. If the current market cap is below the target, then reporting fees are automatically increased (but will never be higher than 33.3\%), putting upward pressure on the price of REP and/or downward pressure on new native open interest. If the current market cap is above the\linebreak target, then reporting fees are automatically decreased (but will never be lower than 0.01\%) so that traders are not paying more than needed to keep the system secure.
+
+The reporting fees are determined as follows. Let $r$ be the reporting fee from the previous window, let $t$ be the target market cap, and let $c$ be the current market cap. Then the reporting fee for the current fee window is given by $\max\left\{ \min\left\{\frac{t}{c}r, \frac{333}{1000}\right\} , \frac{1}{10,000}\right\}$.
+
+\subsection{Leveraging the Threat of a Fork}\label{section:leveraging_the_threat_of_a_fork}
+
+As mentioned above, forks are a disruptive and slow\linebreak way for markets to reach finalization. Rather than using\linebreak the forking process to resolve every market, Augur leverages the \textit{threat} of a fork to resolve markets efficiently.
+
+Recall that any stake successfully disputing an out-\linebreak come in favor of the market's final outcome will receive\linebreak a 50\% ROI on their dispute stake.\footnote{Measured in REP that exists in a universe that corresponds\linebreak to the market's final outcome; see Theorem~3 in Appendix~A.} In the event of a\linebreak fork, any REP staked on any of the market's false outcomes should lose all economic value, while any REP staked on the market's true outcome is rewarded with\linebreak 50\% more REP in the child universe that corresponds to the market's true outcome (regardless of the outcome\linebreak of the fork). Therefore, if pushed to a fork, REP holders who dispute false outcomes in favor of true outcomes will always come out ahead, while REP holders who staked\linebreak on false outcomes will see their REP lose all economic value.
+
+We believe this situation is sufficient to guarantee that all false tentative outcomes will be successfully disputed.
+
+\section{Potential Issues \& Risks}
+
+\subsection{Parasitic Markets}
+
+Recall that a parasitic market is any market that does not pay reporting fees to Augur, but does resolve in accordance with the resolution of a native Augur market. Because parasitic markets do not have any reporters to pay, they can offer the same service as Augur with lower fees. This can have serious consequences for the integrity of Augur's forking protocol.
+
+In particular, if parasitic markets attract trading inter\-est away from Augur, then Augur's reporters will receive less in reporting fees. This would put downward pressure on the market cap of REP. If the market cap of REP\linebreak falls too low, the integrity of the forking protocol is put in jeopardy (Theorem~\ref{th:market_cap_security_theorem}). As a result, parasitic markets have the potential to threaten the long term viability of Augur, and should be vehemently opposed.
+
+Our best defense against parasitic markets is to make trading on the Augur platform as cheap as possible (while still maintaining the integrity of the oracle), in order to minimize the reward for running a parasitic market.
+
+\subsection{Volatility of Open Interest}
+
+Large, sudden, and unexpected increases in open in\-terest -- like those that may be seen during a popular sporting event -- result in rapid increases in the market cap requirement for forking protocol integrity (Theorem\linebreak ~\ref{th:market_cap_security_theorem}). When the market cap requirement exceeds the mar\-ket cap, there is a risk of economically rational attackers causing a fork to resolve incorrectly. While Augur does attempt to nudge the market cap upwards during such situations (see Section~\ref{section:market_cap_nudges}), these nudges are reactionary and are adjusted only once per 7-day fee window.
+
+It is worth noting, however, that speculators who wit\-ness the sudden increase in open interest may buy REP in anticipation of the reactionary market cap nudge, thus driving the market cap of REP up, perhaps to a point where the integrity of the forking protocol is no longer threatened. So the length of time during which the ora-\linebreak cle is vulnerable may not be long enough for an attacker to successfully exploit the vulnerability.
+
+\subsection{Inconsistent or Malicious Resolution Sources}
+
+During market creation, market creators chose a resolution source that reporters should use to determine the outcome of the event in question. If the market creator chooses an inconsistent or malicious resolution source,\linebreak honest reporters may lose money.
+
+For example, suppose the market in question has outcomes \texttt{A} and \texttt{B}, and the market creator, Serena, has cho-\linebreak sen her own website, \texttt{attacker.com}, as the resolution source. After the market's event end time, Serena -- who is also the designated reporter for the market -- reports outcome \texttt{A}, and updates \texttt{attacker.com} to indicate that\linebreak outcome \texttt{B} is the correct outcome. Honest reporters who check \texttt{attacker.com} will see that the initial report is in\-correct and, during the first dispute round, should suc\-cessfully dispute the tentative outcome in favor of out-\linebreak come \texttt{B}. Serena would update \texttt{attacker.com} to indicate that outcome \texttt{A} is the correct outcome, and the market would then enter its second dispute round. Again, reporters who check \texttt{attacker.com} will see that the tenta-\linebreak tive outcome (outcome \texttt{B}) is incorrect, and may successfully dispute it. Serena can repeat this behavior until\linebreak the market resolves. No matter how the market resolves, some honest reporters will lose money.
+
+Several variations of this attack exist. Simply ignoring markets with dubious resolution sources is not sufficient, for in the event that such a market causes a fork, all REP holders will have to choose a child universe to which to migrate their REP. Reporters should remain vigilant against markets with dubious resolution sources. Such markets should be publicly identified so reporters can coordinate to make sure such markets finalize as invalid.
+
+\subsection{Self-Referential Oracle Queries}
+
+Markets that trade on the future behavior of Augur's oracle may have undesirable effects on the behavior of the oracle itself~\cite{Othman_2010}. For example, consider a market that\linebreak trades on the question, ``Will any designated reporter fail\linebreak to submit a report during their three-day forking period before December 31, 2018?'' Bets placed on the \texttt{No} outcome of this market may act as a perverse incentive for designated reporters to intentionally fail to report. If a designated reporter can buy up enough \texttt{Yes} shares at a low enough price to compensate for the loss of the no-\linebreak show bond, they may intentionally fail to report.
+
+If the market cap of REP is large enough (Theorem~\ref{th:market_cap_security_theorem}) then these self-referential oracle queries will not threaten the integrity of the forking protocol. However, they may negatively affect the performance of Augur by causing delays in market finalizations. While markets would still finalize correctly, this sort of behavior is disruptive and undesirable.
+
+\subsection{Uncertain Fork Participation}
+
+We cannot know in advance how much REP will be migrated to the \texttt{True} universe during the forking period of a fork, thus we cannot know in advance whether the market cap is large enough for the oracle to have integrity (Theorem~\ref{th:market_cap_security_theorem}). Our belief in the integrity of the forking protocol can be no stronger than our belief in our assumptions about the lower bound on honest participation during a forking period. We assume that at least 20\% of all REP will migrate to the \texttt{True} child universe during the forking period of a fork, but we cannot guarantee this.
+
+Augur forks differ from blockchain forks in one impor\-tant respect: after a blockchain fork, a user who owned\linebreak a coin on the parent chain will now own a coin on both\linebreak forks. Ignoring replay attacks, blockchain forks pose lit-\linebreak tle risk to users. After an Augur fork, however, a user\linebreak who owns a REP token in the parent universe can mi-\linebreak grate that coin to only one of the child universes. If the user migrates their token to any universe other than the consensus universe, their token may lose all value. Thus migrating REP during the forking period of a fork, before\linebreak it is clear which child universe has achieved consensus, exposes the user to risk. That risk may discourage par\-ticipation during the forking period of contentious forks.
+
+In an effort to compensate for this risk and encour\-age participation during forking periods, all token holders\linebreak who migrate their REP within 60 days of the start of a\linebreak fork will receive 5\% additional REP in the child universe\linebreak to which they migrated (see Section~I.C.9). However, we\linebreak cannot know in advance whether this 5\% bonus will be enough to compensate for the risk and incentivize par-\linebreak \vspace{-\baselineskip}ticipation during a forking period.
+
+\subsection{Ambiguous or Subjective Markets}\label{section:ambiguous_or_subjective_markets}
+
+Only events that have objectively knowable outcomes are suitable for use in Augur markets. If reporters be\-lieve that a market is not suitable for resolution by the platform -- for example, because it is ambiguous, subjec\-tive, or the outcome is not known by the event end date -- they should report the market as \texttt{Invalid}. If a market resolves as \texttt{Invalid}, traders are paid out at equal values for all possible outcomes; for scalar markets, traders are paid out halfway between the market's minimum price and maximum price.
+
+It is possible to imagine markets where some reporters are certain that the outcome is \texttt{A} and others are cer-\linebreak tain that the outcome is \texttt{B}. For example, in 2006, TradeSports allowed its users to speculate on whether North Korea would fire a ballistic missile that would land outside of its airspace before the end of July 2006. On July\linebreak 5, 2006, North Korea successfully fired a ballistic missile that landed outside of its airspace, and the event was widely reported by the world media and confirmed by many U.S. government sources. However, the U.S. Department of Defense had not confirmed the event, as\linebreak was required by TradeSports' contract. TradeSports concluded that the contract's conditions had not been met, and paid out accordingly.\footnote{See \texttt{https://en.wikipedia.org/wiki/Intrade\#Disputes} for details.}
+
+This is a case where the spirit of the market -- to predict the missile launch -- was clearly satisfied, but the letter\linebreak of the market -- to predict whether the U.S. Department\linebreak of Defense would confirm the launch -- was not. TradeSports, being a centralized website, was able to unilater-\linebreak ally declare the outcome of the market. If such a situation arises in an Augur market, REP holders may have differing opinions about how the market should resolve, and stake their REP accordingly. In the worst case, this could result in a fork where REP in more than one child universe maintains a non-zero market value.
+
+\begin{acknowledgments}\label{section:acknowledgements}
+We thank Abraham Othman, Alex Chapman, Serena Randolph, Tom Haile, George Hotz, Scott Bigelow, and Peronet Despeignes for their helpful feedback and sug\-gestions.
+\end{acknowledgments}
+
+\bibliographystyle{unsrt}
+\bibliography{augur}
+
+\end{document}
+
