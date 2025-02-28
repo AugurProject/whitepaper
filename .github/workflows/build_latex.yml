@@ -1,8 +1,5 @@
 name: Build LaTeX document
-on:
-  push:
-    branches:
-      - master
+on: [push]
 jobs:
   build_latex:
     runs-on: ubuntu-latest
@@ -22,6 +19,7 @@ jobs:
       run: |
         file ./v2/english/augur-whitepaper-v2.pdf | grep -q ' PDF '
     - name: Bump version and push tag
+      if: ${{ github.ref == 'refs/heads/master' }}
       id: bump_version
       uses: anothrNick/github-tag-action@3840ec22ac98e14d981375e3ae2d8d0392964521
       env:
@@ -30,6 +28,7 @@ jobs:
         DEFAULT_BUMP: patch
         INITIAL_VERSION: 2.0.0
     - name: Create Release
+      if: ${{ github.ref == 'refs/heads/master' }}
       id: create_release
       uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e
       env:
@@ -40,6 +39,7 @@ jobs:
         draft: false
         prerelease: false
     - name: Upload Release Asset
+      if: ${{ github.ref == 'refs/heads/master' }}
       id: upload-release-asset 
       uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
       env:
