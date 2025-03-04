@@ -1,5 +1,9 @@
 name: Build LaTeX document
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      master
+  pull_request:
 jobs:
   build_latex:
     runs-on: ubuntu-latest
