@@ -15,4 +15,4 @@ If you're interested in contributing edits to the whitepapers, please submit pul
 
 ### Questions
 
-If you have any questions, please join the [Augur Discord](https://augur.net/invite](https://discord.com/invite/CdCSYk9GwH) and ask in the #whitepaper channel. 
+If you have any questions, please join the [Augur Discord](https://discord.com/invite/CdCSYk9GwH) and ask in the #game-theory channel. 
